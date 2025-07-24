@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.error;
+package com.brokendev.backend.common.exceptions.dto;
 
 import java.time.LocalDateTime;
 

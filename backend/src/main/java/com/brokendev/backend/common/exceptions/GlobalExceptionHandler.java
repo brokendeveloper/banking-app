@@ -1,7 +1,7 @@
 package com.brokendev.backend.common.exceptions;
 
-import com.brokendev.backend.dto.error.ErrorResponseDTO;
-import com.brokendev.backend.dto.error.ValidationErrorResponseDTO;
+import com.brokendev.backend.common.exceptions.dto.ErrorResponseDTO;
+import com.brokendev.backend.common.exceptions.dto.ValidationErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
