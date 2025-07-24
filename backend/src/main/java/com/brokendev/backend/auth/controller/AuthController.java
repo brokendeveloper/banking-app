@@ -1,13 +1,13 @@
-package com.brokendev.backend.controllers;
+package com.brokendev.backend.auth.controller;
 
 
 
-import com.brokendev.backend.dto.login.LoginRequestDTO;
-import com.brokendev.backend.dto.login.LoginResponseDTO;
-import com.brokendev.backend.dto.register.RegisterRequestDTO;
-import com.brokendev.backend.dto.register.RegisterResponseDTO;
+import com.brokendev.backend.auth.dto.login.LoginRequestDTO;
+import com.brokendev.backend.auth.dto.login.LoginResponseDTO;
+import com.brokendev.backend.auth.dto.register.RegisterRequestDTO;
+import com.brokendev.backend.auth.dto.register.RegisterResponseDTO;
 
-import com.brokendev.backend.services.UserService;
+import com.brokendev.backend.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,17 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
     @Operation(summary = "login de usuário", description = "Autentica um usuário e retorna o login + JWT")
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO request){
-        return ResponseEntity.ok(userService.login(request));
+        return ResponseEntity.ok(authService.login(request));
     }
 
     @Operation(summary = "registro de usuário", description = "registra um novo usuário no sistema")
     @PostMapping("/register")
     public ResponseEntity<RegisterResponseDTO>register(@RequestBody @Valid RegisterRequestDTO request){
-        return ResponseEntity.ok(userService.register(request));
+        return ResponseEntity.ok(authService.register(request));
     }
 }

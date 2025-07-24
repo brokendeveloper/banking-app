@@ -1,9 +1,10 @@
 package com.brokendev.backend.controllers;
 
-import com.brokendev.backend.dto.login.LoginRequestDTO;
-import com.brokendev.backend.dto.login.LoginResponseDTO;
-import com.brokendev.backend.dto.register.RegisterRequestDTO;
-import com.brokendev.backend.dto.register.RegisterResponseDTO;
+import com.brokendev.backend.auth.controller.AuthController;
+import com.brokendev.backend.auth.dto.login.LoginRequestDTO;
+import com.brokendev.backend.auth.dto.login.LoginResponseDTO;
+import com.brokendev.backend.auth.dto.register.RegisterRequestDTO;
+import com.brokendev.backend.auth.dto.register.RegisterResponseDTO;
 import com.brokendev.backend.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

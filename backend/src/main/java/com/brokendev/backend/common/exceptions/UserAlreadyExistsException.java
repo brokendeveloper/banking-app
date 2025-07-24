@@ -1,4 +1,4 @@
-package com.brokendev.backend.exception;
+package com.brokendev.backend.common.exceptions;
 
 public class UserAlreadyExistsException extends RuntimeException {
     public UserAlreadyExistsException(String message) {

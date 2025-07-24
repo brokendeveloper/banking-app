@@ -1,4 +1,4 @@
-package com.brokendev.backend.exception;
+package com.brokendev.backend.common.exceptions;
 
 public class InvestmentNotMaturedException extends RuntimeException {
     public InvestmentNotMaturedException(String message) {

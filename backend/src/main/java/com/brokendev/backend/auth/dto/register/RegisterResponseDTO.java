@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.register;
+package com.brokendev.backend.auth.dto.register;
 
 public record RegisterResponseDTO(
         String name,

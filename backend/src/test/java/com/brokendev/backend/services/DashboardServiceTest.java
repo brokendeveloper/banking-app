@@ -3,7 +3,7 @@ package com.brokendev.backend.services;
 import com.brokendev.backend.domain.Account;
 import com.brokendev.backend.dto.account.TransactionStatementResponseDTO;
 import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
-import com.brokendev.backend.exception.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.AccountNotFoundException;
 import com.brokendev.backend.repositories.AccountRepository;
 import com.brokendev.backend.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package com.brokendev.backend.exception;
+package com.brokendev.backend.common.exceptions;
 
 import com.brokendev.backend.dto.error.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;

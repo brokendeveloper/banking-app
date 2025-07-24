@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.register;
+package com.brokendev.backend.auth.dto.register;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
