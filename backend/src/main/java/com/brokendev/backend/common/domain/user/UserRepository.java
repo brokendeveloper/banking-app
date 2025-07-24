@@ -1,6 +1,5 @@
-    package com.brokendev.backend.repositories;
+    package com.brokendev.backend.common.domain.user;
 
-    import com.brokendev.backend.domain.User;
     import org.springframework.data.jpa.repository.JpaRepository;
     import org.springframework.stereotype.Repository;
 

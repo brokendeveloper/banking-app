@@ -1,7 +1,7 @@
 package com.brokendev.backend.services;
 
-import com.brokendev.backend.domain.Account;
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.account.Account;
+import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.dto.account.AccountInfoResponseDTO;
 import com.brokendev.backend.dto.card.CardResponseDTO;
 import com.brokendev.backend.dto.profile.UserProfileResponseDTO;
@@ -9,9 +9,9 @@ import com.brokendev.backend.dto.profile.UserProfileUpdateDTO;
 import com.brokendev.backend.dto.profile.UserProfileUpdateResponseDTO;
 import com.brokendev.backend.common.exceptions.AccountNotFoundException;
 import com.brokendev.backend.infra.security.TokenService;
-import com.brokendev.backend.repositories.AccountRepository;
+import com.brokendev.backend.common.domain.account.AccountRepository;
 import com.brokendev.backend.repositories.CardRepository;
-import com.brokendev.backend.repositories.UserRepository;
+import com.brokendev.backend.common.domain.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

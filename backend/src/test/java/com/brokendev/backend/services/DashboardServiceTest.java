@@ -1,11 +1,12 @@
 package com.brokendev.backend.services;
 
-import com.brokendev.backend.domain.Account;
+import com.brokendev.backend.common.domain.user.User;
+import com.brokendev.backend.common.domain.account.Account;
 import com.brokendev.backend.dto.account.TransactionStatementResponseDTO;
 import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
 import com.brokendev.backend.common.exceptions.AccountNotFoundException;
-import com.brokendev.backend.repositories.AccountRepository;
-import com.brokendev.backend.repositories.UserRepository;
+import com.brokendev.backend.common.domain.account.AccountRepository;
+import com.brokendev.backend.common.domain.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,12 +32,12 @@ class DashboardServiceTest {
     @InjectMocks
     private DashboardService dashboardService;
 
-    private com.brokendev.backend.domain.User user;
+    private User user;
     private Account account;
 
     @BeforeEach
     void setUp() {
-        user = new com.brokendev.backend.domain.User();
+        user = new User();
         user.setId(1L);
         user.setName("Test User");
         user.setEmail("user@email.com");

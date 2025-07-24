@@ -1,6 +1,6 @@
 package com.brokendev.backend.services;
 
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.auth.dto.login.LoginRequestDTO;
 import com.brokendev.backend.auth.dto.login.LoginResponseDTO;
 import com.brokendev.backend.auth.dto.register.RegisterRequestDTO;
@@ -8,8 +8,8 @@ import com.brokendev.backend.auth.dto.register.RegisterResponseDTO;
 import com.brokendev.backend.common.exceptions.InvalidPasswordException;
 import com.brokendev.backend.common.exceptions.UserAlreadyExistsException;
 import com.brokendev.backend.infra.security.TokenService;
-import com.brokendev.backend.repositories.AccountRepository;
-import com.brokendev.backend.repositories.UserRepository;
+import com.brokendev.backend.common.domain.account.AccountRepository;
+import com.brokendev.backend.common.domain.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

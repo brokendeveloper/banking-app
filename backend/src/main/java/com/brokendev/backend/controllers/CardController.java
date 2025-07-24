@@ -1,6 +1,6 @@
 package com.brokendev.backend.controllers;
 
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.dto.card.CardBlockResponseDTO;
 import com.brokendev.backend.dto.card.CardCreateRequestDTO;
 import com.brokendev.backend.dto.card.CardResponseDTO;

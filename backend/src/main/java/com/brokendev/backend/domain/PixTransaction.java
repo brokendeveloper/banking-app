@@ -1,6 +1,7 @@
 package com.brokendev.backend.domain;
 
 
+import com.brokendev.backend.common.domain.account.Account;
 import com.brokendev.backend.enums.PixKeyType;
 import com.brokendev.backend.enums.PixTransactionStatus;
 import jakarta.persistence.*;

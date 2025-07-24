@@ -1,6 +1,6 @@
 package com.brokendev.backend.repositories;
 
-import com.brokendev.backend.domain.Account;
+import com.brokendev.backend.common.domain.account.Account;
 import com.brokendev.backend.domain.Investment;
 import org.springframework.data.jpa.repository.JpaRepository;
 

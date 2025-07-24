@@ -1,8 +1,10 @@
 package com.brokendev.backend.services;
 
-import com.brokendev.backend.domain.Account;
+import com.brokendev.backend.common.domain.account.Account;
+import com.brokendev.backend.common.domain.account.AccountRepository;
+import com.brokendev.backend.common.domain.user.UserRepository;
 import com.brokendev.backend.domain.BoletoPayment;
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.dto.account.AccountBalanceResponseDTO;
 import com.brokendev.backend.dto.account.AccountDepositResponseDTO;
 import com.brokendev.backend.dto.boleto.BoletoPaymentRequestDTO;
