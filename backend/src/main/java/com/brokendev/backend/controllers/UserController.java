@@ -1,7 +1,7 @@
 package com.brokendev.backend.controllers;
 
 
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.dto.profile.UserProfileResponseDTO;
 import com.brokendev.backend.dto.profile.UserProfileUpdateDTO;
 import com.brokendev.backend.dto.profile.UserProfileUpdateResponseDTO;

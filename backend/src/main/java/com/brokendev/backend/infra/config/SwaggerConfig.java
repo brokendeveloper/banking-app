@@ -18,16 +18,16 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("API - Bank App")
-                        .description("Documentação da API do Bank App")
                         .version("1.0.0")
+                        .description("API documentation for Bank App and all your operations")
                         .contact(new Contact()
-                                .name("BrokenDev")
+                                .name("Luccas Fernandes - BrokenDeveloper")
                                 .email("contatoluccasf9@gmail.com")
+                                .url("https://github.com/brokendeveloper/banking-app")
                         )
                 )
                 .servers(List.of(
-                        new Server().url("http://localhost:8080").description("Servidor Local")
-                        //new Server().url("https://api.brokendev.com").description("Servidor de Produção")
+                        new Server().url("http://localhost:8080").description("Local Server")
                 ));
     }
 }

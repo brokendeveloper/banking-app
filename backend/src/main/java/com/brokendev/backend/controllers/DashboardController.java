@@ -1,7 +1,7 @@
 package com.brokendev.backend.controllers;
 
 
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
 import com.brokendev.backend.services.DashboardService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,7 +1,7 @@
 package com.brokendev.backend.controllers;
 
 
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.dto.notification.NotificationResponseDTO;
 import com.brokendev.backend.services.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,9 +1,11 @@
 package com.brokendev.backend.services;
 
-import com.brokendev.backend.domain.Account;
+import com.brokendev.backend.common.domain.account.Account;
+import com.brokendev.backend.common.domain.account.AccountRepository;
+import com.brokendev.backend.common.domain.user.UserRepository;
 import com.brokendev.backend.domain.BoletoPayment;
 import com.brokendev.backend.domain.PixTransaction;
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.dto.account.AccountBalanceResponseDTO;
 import com.brokendev.backend.dto.account.AccountDepositResponseDTO;
 import com.brokendev.backend.dto.account.TransactionStatementResponseDTO;
@@ -14,9 +16,9 @@ import com.brokendev.backend.dto.pixTransfer.PixTransferResponseDTO;
 import com.brokendev.backend.enums.BoletoPaymentStatus;
 import com.brokendev.backend.enums.PixTransactionStatus;
 import com.brokendev.backend.enums.TransactionType;
-import com.brokendev.backend.exception.AccountNotFoundException;
-import com.brokendev.backend.exception.InsufficientBalanceException;
-import com.brokendev.backend.exception.PixTransferNotAllowedException;
+import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
+import com.brokendev.backend.common.exceptions.PixTransferNotAllowedException;
 import com.brokendev.backend.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

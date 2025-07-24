@@ -1,5 +1,6 @@
 package com.brokendev.backend.domain;
 
+import com.brokendev.backend.common.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

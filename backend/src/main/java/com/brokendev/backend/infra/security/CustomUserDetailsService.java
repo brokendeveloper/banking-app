@@ -1,7 +1,7 @@
 package com.brokendev.backend.infra.security;
 
-import com.brokendev.backend.domain.User;
-import com.brokendev.backend.repositories.UserRepository;
+import com.brokendev.backend.common.domain.user.User;
+import com.brokendev.backend.common.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,7 +1,7 @@
 package com.brokendev.backend.repositories;
 
 import com.brokendev.backend.domain.Notification;
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

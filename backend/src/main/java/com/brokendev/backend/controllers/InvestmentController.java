@@ -1,6 +1,6 @@
 package com.brokendev.backend.controllers;
 
-import com.brokendev.backend.domain.User;
+import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.dto.investment.InvestmentRequestDTO;
 import com.brokendev.backend.dto.investment.InvestmentResponseDTO;
 import com.brokendev.backend.services.InvestmentService;

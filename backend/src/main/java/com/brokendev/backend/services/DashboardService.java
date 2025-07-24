@@ -2,11 +2,10 @@ package com.brokendev.backend.services;
 
 import com.brokendev.backend.dto.account.TransactionStatementResponseDTO;
 import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
-import com.brokendev.backend.exception.AccountNotFoundException;
-import com.brokendev.backend.repositories.AccountRepository;
-import com.brokendev.backend.repositories.UserRepository;
+import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.domain.account.AccountRepository;
+import com.brokendev.backend.common.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
