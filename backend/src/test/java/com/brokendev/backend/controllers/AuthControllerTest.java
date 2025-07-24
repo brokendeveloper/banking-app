@@ -43,7 +43,7 @@ public class AuthControllerTest {
         LoginRequestDTO loginRequest = new LoginRequestDTO("usuario@email.com", "senha123");
         LoginResponseDTO loginResponse = new LoginResponseDTO("usuario", "usuario@email.com", "jwt-token-exemplo");
 
-        Mockito.when(userService.login(any(LoginRequestDTO.class))).thenReturn(loginResponse);
+       // Mockito.when(userService.login(any(LoginRequestDTO.class))).thenReturn(loginResponse);
 
         // Act & Assert
         mockMvc.perform(post("/api/auth/login")
@@ -61,7 +61,7 @@ public class AuthControllerTest {
         RegisterRequestDTO registerRequest = new RegisterRequestDTO("novo Usuário", "12345678901", "novousuario@email.com", "senhaforte123", "81123456789");
         RegisterResponseDTO registerResponse = new RegisterResponseDTO("novo Usuário","novousuario@email.com","Usuário registrado com sucesso!");
 
-        Mockito.when(userService.register(any(RegisterRequestDTO.class))).thenReturn(registerResponse);
+        //Mockito.when(userService.register(any(RegisterRequestDTO.class))).thenReturn(registerResponse);
 
         // Act & Assert
         mockMvc.perform(post("/api/auth/register")

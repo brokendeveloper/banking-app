@@ -52,7 +52,7 @@ public class AuthService {
 
     public RegisterResponseDTO register(RegisterRequestDTO registerRequest) {
         if(userRepository.findByEmail(registerRequest.email()).isPresent()) {
-            throw new UserAlreadyExistsException("User already exists");
+            throw new UserAlreadyExistsException("Email already exists");
         }
 
         User user = new User();
