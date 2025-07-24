@@ -1,13 +1,18 @@
 package com.brokendev.backend.common.exceptions;
 
 import com.brokendev.backend.dto.error.ErrorResponseDTO;
+import com.brokendev.backend.dto.error.ValidationErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -18,6 +23,18 @@ public class GlobalExceptionHandler {
                         status.value(),
                         error,
                         message,
+                        LocalDateTime.now()
+                )
+        );
+    }
+
+    private ResponseEntity<ValidationErrorResponseDTO> buildValidationError(HttpStatus status, String error, String generalMessage, Map<String, String> fieldErrors) {
+        return ResponseEntity.status(status).body(
+                new ValidationErrorResponseDTO(
+                        status.value(),
+                        error,
+                        generalMessage,
+                        fieldErrors,
                         LocalDateTime.now()
                 )
         );
@@ -101,6 +118,31 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<ErrorResponseDTO> handleInvalidPassword(InvalidPasswordException ex) {
         return buildError(HttpStatus.UNAUTHORIZED, "Invalid Password", ex.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+
+            if (error instanceof FieldError) {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errors.put(fieldName, errorMessage);
+            } else {
+
+                errors.put(error.getObjectName(), error.getDefaultMessage());
+            }
+        });
+
+        String generalMessage = "Invalid data in Request";
+
+        return buildValidationError(
+                HttpStatus.BAD_REQUEST,
+                "Validation Error",
+                generalMessage,
+                errors
+        );
     }
 
     // Handler genérico para exceções não tratadas

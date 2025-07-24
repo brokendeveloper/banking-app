@@ -1,6 +1,6 @@
 package com.brokendev.backend.controllers;
 
-import com.brokendev.backend.auth.controller.AuthController;
+import com.brokendev.backend.auth.integration.AuthController;
 import com.brokendev.backend.auth.dto.login.LoginRequestDTO;
 import com.brokendev.backend.auth.dto.login.LoginResponseDTO;
 import com.brokendev.backend.auth.dto.register.RegisterRequestDTO;
@@ -8,7 +8,6 @@ import com.brokendev.backend.auth.dto.register.RegisterResponseDTO;
 import com.brokendev.backend.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AuthController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class AuthControllerTest {
+public class AuthIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
