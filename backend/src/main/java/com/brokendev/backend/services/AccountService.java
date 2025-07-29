@@ -88,66 +88,7 @@ public class AccountService {
 
     }
 
-    @Transactional
-    public PixTransferResponseDTO transferPix(String senderEmail, PixTransferRequestDTO request) {
-        Account sender = accountRepository.findByUserEmail(senderEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Conta do remetente não encontrada"));
 
-        Account receiver = switch (request.pixKeyType()) {
-            case EMAIL -> accountRepository.findByUserEmail(request.pixKey())
-                    .orElseThrow(() -> new AccountNotFoundException("Conta do destinatário não encontrada"));
-            case CPF -> accountRepository.findByUserCpf(request.pixKey())
-                    .orElseThrow(() -> new AccountNotFoundException("Conta do destinatário não encontrada"));
-            case PHONE -> accountRepository.findByUserTelephone(request.pixKey())
-                    .orElseThrow(() -> new AccountNotFoundException("Conta do destinatário não encontrada"));
-            case RANDOM -> throw new UnsupportedOperationException("Chave aleatória ainda não suportada");
-        };
-
-        if (sender.getBalance().compareTo(request.amount()) < 0) {
-            throw new InsufficientBalanceException("Saldo insuficiente");
-        }
-        if (sender.getId().equals(receiver.getId())) {
-            throw new PixTransferNotAllowedException("Não é permitido transferir para si mesmo");
-        }
-
-        sender.setBalance(sender.getBalance().subtract(request.amount()));
-        receiver.setBalance(receiver.getBalance().add(request.amount()));
-        accountRepository.save(sender);
-        accountRepository.save(receiver);
-
-        PixTransaction transaction = new PixTransaction();
-        transaction.setSender(sender);
-        transaction.setReceiver(receiver);
-        transaction.setAmount(request.amount());
-        transaction.setTimestamp(LocalDateTime.now());
-        transaction.setStatus(PixTransactionStatus.COMPLETED);
-        transaction.setDescription("Transferência PIX realizada com sucesso!");
-        transaction.setPixKeyType(request.pixKeyType());
-        transaction.setPixKey(request.pixKey());
-        pixTransactionRepository.save(transaction);
-
-        // Notificações
-        sendAccountNotification(
-                sender, "PIX enviado", "Você enviou um PIX de R$ " +
-                  request.amount() + " para " + receiver.getUser().getEmail()
-        );
-
-        sendAccountNotification(
-                receiver, "PIX recebido", "Você recebeu um PIX de R$ " + request.amount() +
-                        " de " + sender.getUser().getEmail()
-        );
-
-        return new PixTransferResponseDTO(
-                sender.getUser().getEmail(),
-                receiver.getUser().getEmail(),
-                request.amount(),
-                transaction.getTimestamp(),
-                transaction.getStatus(),
-                transaction.getDescription(),
-                transaction.getPixKeyType(),
-                transaction.getPixKey()
-        );
-    }
 
     public BoletoPaymentResponseDTO payBoleto(String payerEmail, BoletoPaymentRequestDTO request) {
         Account payer = accountRepository.findByUserEmail(payerEmail)
