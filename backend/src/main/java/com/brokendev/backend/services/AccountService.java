@@ -35,25 +35,28 @@ import java.util.List;
 @Service
 public class AccountService {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PixTransactionRepository pixTransactionRepository;
+    private final PixTransactionRepository pixTransactionRepository;
 
-    @Autowired
-    private BoletoPaymentRepository boletoPaymentRepository;
+    private final BoletoPaymentRepository boletoPaymentRepository;
 
-    @Autowired
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
 
-    @Autowired
-    private InvestmentRepository investmentRepository;
+    private final InvestmentRepository investmentRepository;
 
-    public AccountBalanceResponseDTO getBalance(String email){
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository, PixTransactionRepository pixTransactionRepository, BoletoPaymentRepository boletoPaymentRepository, NotificationService notificationService, InvestmentRepository investmentRepository) {
+        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
+        this.pixTransactionRepository = pixTransactionRepository;
+        this.boletoPaymentRepository = boletoPaymentRepository;
+        this.notificationService = notificationService;
+        this.investmentRepository = investmentRepository;
+    }
+
+    public AccountBalanceResponseDTO getAccountBalance(String email){
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
@@ -63,7 +66,7 @@ public class AccountService {
         return new AccountBalanceResponseDTO(account.getBalance());
     }
 
-    public AccountDepositResponseDTO deposit(String email, BigDecimal amount){
+    public AccountDepositResponseDTO performDeposit(String email, BigDecimal amount){
         Account account = accountRepository.findByUserEmail(email)
                 .orElseThrow(() -> new AccountNotFoundException("Conta com email fornecido não encontrada"));
 
@@ -181,7 +184,7 @@ public class AccountService {
         );
     }
 
-    public List<TransactionStatementResponseDTO> getStatement(String email) {
+    public List<TransactionStatementResponseDTO> getAccountStatement(String email) {
         Account account = accountRepository.findByUserEmail(email)
                 .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada"));
 
