@@ -56,6 +56,12 @@ public class AccountService {
         this.investmentRepository = investmentRepository;
     }
 
+    private void sendAccountNotification(Account account, String title, String message) {
+        User user = account.getUser();
+        notificationService.notify(user, title, message);
+
+    }
+
     public AccountBalanceResponseDTO getAccountBalance(String email){
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
@@ -74,12 +80,7 @@ public class AccountService {
         accountRepository.save(account);
 
         // Notificação
-        User user = account.getUser();
-        notificationService.notify(
-                user,
-                "Depósito realizado",
-                "Você recebeu um depósito de R$ " + amount
-        );
+        sendAccountNotification(account, "Depósito realizado", "Depósito de R$ " + amount);
 
         return new AccountDepositResponseDTO(account.getBalance(), "Depósito realizado com sucesso!");
 
@@ -125,15 +126,14 @@ public class AccountService {
         pixTransactionRepository.save(transaction);
 
         // Notificações
-        notificationService.notify(
-                sender.getUser(),
-                "PIX enviado",
-                "Você enviou um PIX de R$ " + request.amount() + " para " + receiver.getUser().getEmail()
+        sendAccountNotification(
+                sender, "PIX enviado", "Você enviou um PIX de R$ " +
+                  request.amount() + " para " + receiver.getUser().getEmail()
         );
-        notificationService.notify(
-                receiver.getUser(),
-                "PIX recebido",
-                "Você recebeu um PIX de R$ " + request.amount() + " de " + sender.getUser().getEmail()
+
+        sendAccountNotification(
+                receiver, "PIX recebido", "Você recebeu um PIX de R$ " + request.amount() +
+                        " de " + sender.getUser().getEmail()
         );
 
         return new PixTransferResponseDTO(
@@ -169,10 +169,10 @@ public class AccountService {
         boletoPaymentRepository.save(boleto);
 
         // Notificação
-        notificationService.notify(
-                payer.getUser(),
+        sendAccountNotification(
+                payer,
                 "Boleto pago",
-                "Você pagou um boleto de R$ " + request.amount() + " (código: " + request.barcode() + ")"
+                "Você pagou um boleto de R$ " + request.amount() + " (código: " + request.barcode() + " )"
         );
 
         return new BoletoPaymentResponseDTO(
