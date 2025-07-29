@@ -1,4 +1,4 @@
-package com.brokendev.backend.utils;
+package com.brokendev.backend.account.utils;
 
 public class AccountUtils {
     public static String generateAccountNumber() {

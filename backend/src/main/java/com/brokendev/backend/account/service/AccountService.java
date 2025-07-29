@@ -1,33 +1,22 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.account.service;
 
 import com.brokendev.backend.account.domain.Account;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.boleto_payment.domain.BoletoPaymentRepository;
 import com.brokendev.backend.common.domain.user.UserRepository;
-import com.brokendev.backend.boleto_payment.domain.BoletoPayment;
-import com.brokendev.backend.pix_transfer.domain.PixTransaction;
 import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.account.dto.AccountBalanceResponseDTO;
 import com.brokendev.backend.account.dto.AccountDepositResponseDTO;
 import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
-import com.brokendev.backend.boleto_payment.dto.BoletoPaymentRequestDTO;
-import com.brokendev.backend.boleto_payment.dto.BoletoPaymentResponseDTO;
-import com.brokendev.backend.pix_transfer.dto.PixTransferRequestDTO;
-import com.brokendev.backend.pix_transfer.dto.PixTransferResponseDTO;
-import com.brokendev.backend.enums.BoletoPaymentStatus;
-import com.brokendev.backend.enums.PixTransactionStatus;
 import com.brokendev.backend.enums.TransactionType;
 import com.brokendev.backend.common.exceptions.AccountNotFoundException;
-import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
-import com.brokendev.backend.common.exceptions.PixTransferNotAllowedException;
 import com.brokendev.backend.pix_transfer.domain.PixTransactionRepository;
 import com.brokendev.backend.repositories.*;
-import jakarta.transaction.Transactional;
+import com.brokendev.backend.services.NotificationService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

@@ -1,6 +1,7 @@
 package com.brokendev.backend.services;
 
 import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
+import com.brokendev.backend.account.service.AccountService;
 import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
 import com.brokendev.backend.common.exceptions.AccountNotFoundException;
 import com.brokendev.backend.account.domain.AccountRepository;

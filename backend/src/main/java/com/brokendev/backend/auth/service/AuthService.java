@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-import static com.brokendev.backend.utils.AccountUtils.generateAccountNumber;
+import static com.brokendev.backend.account.utils.AccountUtils.generateAccountNumber;
 
 @Service
 public class AuthService {

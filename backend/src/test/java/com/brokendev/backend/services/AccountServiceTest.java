@@ -2,6 +2,7 @@ package com.brokendev.backend.services;
 
 import com.brokendev.backend.account.domain.Account;
 import com.brokendev.backend.account.domain.AccountRepository;
+import com.brokendev.backend.account.service.AccountService;
 import com.brokendev.backend.boleto_payment.domain.BoletoPaymentRepository;
 import com.brokendev.backend.common.domain.user.UserRepository;
 import com.brokendev.backend.boleto_payment.domain.BoletoPayment;
