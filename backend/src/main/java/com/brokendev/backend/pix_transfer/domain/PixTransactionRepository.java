@@ -1,6 +1,5 @@
-package com.brokendev.backend.repositories;
+package com.brokendev.backend.pix_transfer.domain;
 
-import com.brokendev.backend.domain.PixTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PixTransactionRepository extends JpaRepository<PixTransaction, Long> {

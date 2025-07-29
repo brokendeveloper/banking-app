@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.pixTransfer;
+package com.brokendev.backend.pix_transfer.dto;
 
 import com.brokendev.backend.enums.PixKeyType;
 import com.brokendev.backend.enums.PixTransactionStatus;

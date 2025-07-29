@@ -1,4 +1,4 @@
-package com.brokendev.backend.common.domain.account;
+package com.brokendev.backend.account.domain;
 
 
 import com.brokendev.backend.common.domain.user.User;

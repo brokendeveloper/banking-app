@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.account;
+package com.brokendev.backend.account.dto;
 
 import java.util.List;
 

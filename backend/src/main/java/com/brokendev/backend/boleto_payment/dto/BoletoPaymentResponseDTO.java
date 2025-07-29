@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.boleto;
+package com.brokendev.backend.boleto_payment.dto;
 
 import com.brokendev.backend.enums.BoletoPaymentStatus;
 

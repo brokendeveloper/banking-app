@@ -2,14 +2,14 @@ package com.brokendev.backend.controllers;
 
 
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.dto.account.AccountBalanceResponseDTO;
-import com.brokendev.backend.dto.account.AccountDepositRequestDTO;
-import com.brokendev.backend.dto.account.AccountDepositResponseDTO;
-import com.brokendev.backend.dto.account.TransactionStatementResponseDTO;
-import com.brokendev.backend.dto.boleto.BoletoPaymentRequestDTO;
-import com.brokendev.backend.dto.boleto.BoletoPaymentResponseDTO;
-import com.brokendev.backend.dto.pixTransfer.PixTransferRequestDTO;
-import com.brokendev.backend.dto.pixTransfer.PixTransferResponseDTO;
+import com.brokendev.backend.account.dto.AccountBalanceResponseDTO;
+import com.brokendev.backend.account.dto.AccountDepositRequestDTO;
+import com.brokendev.backend.account.dto.AccountDepositResponseDTO;
+import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
+import com.brokendev.backend.boleto_payment.dto.BoletoPaymentRequestDTO;
+import com.brokendev.backend.boleto_payment.dto.BoletoPaymentResponseDTO;
+import com.brokendev.backend.pix_transfer.dto.PixTransferRequestDTO;
+import com.brokendev.backend.pix_transfer.dto.PixTransferResponseDTO;
 import com.brokendev.backend.services.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

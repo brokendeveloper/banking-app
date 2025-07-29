@@ -1,6 +1,5 @@
-package com.brokendev.backend.repositories;
+package com.brokendev.backend.boleto_payment.domain;
 
-import com.brokendev.backend.domain.BoletoPayment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BoletoPaymentRepository extends JpaRepository<BoletoPayment, Long> {
