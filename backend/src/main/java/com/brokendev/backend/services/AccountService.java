@@ -57,12 +57,6 @@ public class AccountService {
         this.investmentRepository = investmentRepository;
     }
 
-    private void sendAccountNotification(Account account, String title, String message) {
-        User user = account.getUser();
-        notificationService.notify(user, title, message);
-
-    }
-
     public AccountBalanceResponseDTO getAccountBalance(String email){
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
@@ -81,49 +75,14 @@ public class AccountService {
         accountRepository.save(account);
 
         // Notificação
-        sendAccountNotification(account, "Depósito realizado", "Depósito de R$ " + amount);
+        notificationService.notify(
+                account.getUser(),
+                "Depósito realizado", "Depósito de R$ " + amount
+        );
 
         return new AccountDepositResponseDTO(account.getBalance(), "Depósito realizado com sucesso!");
 
 
-    }
-
-
-
-    public BoletoPaymentResponseDTO payBoleto(String payerEmail, BoletoPaymentRequestDTO request) {
-        Account payer = accountRepository.findByUserEmail(payerEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Conta com email fornecido não encontrada"));
-
-        if(payer.getBalance().compareTo(request.amount()) < 0) {
-            throw new InsufficientBalanceException("Saldo insuficiente");
-        }
-
-        payer.setBalance(payer.getBalance().subtract(request.amount()));
-        accountRepository.save(payer);
-
-        BoletoPayment boleto = new BoletoPayment();
-        boleto.setPayer(payer);
-        boleto.setBarcode(request.barcode());
-        boleto.setAmount(request.amount());
-        boleto.setPaymentDate(LocalDateTime.now());
-        boleto.setStatus(BoletoPaymentStatus.PAID);
-        boleto.setDescription("Pagamento de boleto realizado com sucesso!");
-        boletoPaymentRepository.save(boleto);
-
-        // Notificação
-        sendAccountNotification(
-                payer,
-                "Boleto pago",
-                "Você pagou um boleto de R$ " + request.amount() + " (código: " + request.barcode() + " )"
-        );
-
-        return new BoletoPaymentResponseDTO(
-                boleto.getBarcode(),
-                boleto.getAmount(),
-                boleto.getPaymentDate(),
-                boleto.getStatus(),
-                boleto.getDescription()
-        );
     }
 
     public List<TransactionStatementResponseDTO> getAccountStatement(String email) {

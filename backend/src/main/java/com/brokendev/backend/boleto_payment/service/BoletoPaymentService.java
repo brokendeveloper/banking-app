@@ -1,0 +1,68 @@
+package com.brokendev.backend.boleto_payment.service;
+
+import com.brokendev.backend.account.domain.Account;
+import com.brokendev.backend.account.domain.AccountRepository;
+import com.brokendev.backend.boleto_payment.domain.BoletoPayment;
+import com.brokendev.backend.boleto_payment.domain.BoletoPaymentRepository;
+import com.brokendev.backend.boleto_payment.dto.BoletoPaymentRequestDTO;
+import com.brokendev.backend.boleto_payment.dto.BoletoPaymentResponseDTO;
+import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
+import com.brokendev.backend.enums.BoletoPaymentStatus;
+import com.brokendev.backend.services.NotificationService;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+public class BoletoPaymentService {
+
+    private final BoletoPaymentRepository boletoPaymentRepository;
+
+    private final AccountRepository accountRepository;
+
+    private final NotificationService notificationService;
+
+
+    public BoletoPaymentService(BoletoPaymentRepository boletoPaymentRepository, AccountRepository accountRepository, NotificationService notificationService) {
+        this.boletoPaymentRepository = boletoPaymentRepository;
+        this.accountRepository = accountRepository;
+        this.notificationService = notificationService;
+    }
+
+    public BoletoPaymentResponseDTO payBoleto(String payerEmail, BoletoPaymentRequestDTO request) {
+        Account payer = accountRepository.findByUserEmail(payerEmail)
+                .orElseThrow(() -> new AccountNotFoundException("Conta com email fornecido não encontrada"));
+
+        if(payer.getBalance().compareTo(request.amount()) < 0) {
+            throw new InsufficientBalanceException("Saldo insuficiente");
+        }
+
+        payer.setBalance(payer.getBalance().subtract(request.amount()));
+        accountRepository.save(payer);
+
+        BoletoPayment boleto = new BoletoPayment();
+        boleto.setPayer(payer);
+        boleto.setBarcode(request.barcode());
+        boleto.setAmount(request.amount());
+        boleto.setPaymentDate(LocalDateTime.now());
+        boleto.setStatus(BoletoPaymentStatus.PAID);
+        boleto.setDescription("Pagamento de boleto realizado com sucesso!");
+        boletoPaymentRepository.save(boleto);
+
+        // Notificação
+        notificationService.notify(
+                payer.getUser(),
+                "Boleto pago",
+                "Você pagou um boleto de R$ " + request.amount() + " (código: " + request.barcode() + " )"
+        );
+
+        return new BoletoPaymentResponseDTO(
+                boleto.getBarcode(),
+                boleto.getAmount(),
+                boleto.getPaymentDate(),
+                boleto.getStatus(),
+                boleto.getDescription()
+        );
+    }
+}
