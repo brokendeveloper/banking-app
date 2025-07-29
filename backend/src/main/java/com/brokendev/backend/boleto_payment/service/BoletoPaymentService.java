@@ -32,10 +32,10 @@ public class BoletoPaymentService {
 
     public BoletoPaymentResponseDTO payBoleto(String payerEmail, BoletoPaymentRequestDTO request) {
         Account payer = accountRepository.findByUserEmail(payerEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Conta com email fornecido não encontrada"));
+                .orElseThrow(() -> new AccountNotFoundException("Could not find account with email " + payerEmail));
 
         if(payer.getBalance().compareTo(request.amount()) < 0) {
-            throw new InsufficientBalanceException("Saldo insuficiente");
+            throw new InsufficientBalanceException("Amount not enough to pay boleto");
         }
 
         payer.setBalance(payer.getBalance().subtract(request.amount()));
@@ -47,14 +47,14 @@ public class BoletoPaymentService {
         boleto.setAmount(request.amount());
         boleto.setPaymentDate(LocalDateTime.now());
         boleto.setStatus(BoletoPaymentStatus.PAID);
-        boleto.setDescription("Pagamento de boleto realizado com sucesso!");
+        boleto.setDescription("Payment successful!");
         boletoPaymentRepository.save(boleto);
 
         // Notificação
         notificationService.notify(
                 payer.getUser(),
-                "Boleto pago",
-                "Você pagou um boleto de R$ " + request.amount() + " (código: " + request.barcode() + " )"
+                "Boleto payment successful!",
+                "You paid a R$ " + request.amount() + " (code: " + request.barcode() + " )"
         );
 
         return new BoletoPaymentResponseDTO(

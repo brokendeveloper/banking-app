@@ -35,23 +35,23 @@ public class PixTransferService {
     @Transactional
     public PixTransferResponseDTO transferPix(String senderEmail, PixTransferRequestDTO request) {
         Account sender = accountRepository.findByUserEmail(senderEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Conta do remetente não encontrada"));
+                .orElseThrow(() -> new AccountNotFoundException("Could not find account with email " + senderEmail));
 
         Account receiver = switch (request.pixKeyType()) {
             case EMAIL -> accountRepository.findByUserEmail(request.pixKey())
-                    .orElseThrow(() -> new AccountNotFoundException("Conta do destinatário não encontrada"));
+                    .orElseThrow(() -> new AccountNotFoundException("Receiver account not found"));
             case CPF -> accountRepository.findByUserCpf(request.pixKey())
-                    .orElseThrow(() -> new AccountNotFoundException("Conta do destinatário não encontrada"));
+                    .orElseThrow(() -> new AccountNotFoundException("Receiver account not found"));
             case PHONE -> accountRepository.findByUserTelephone(request.pixKey())
-                    .orElseThrow(() -> new AccountNotFoundException("Conta do destinatário não encontrada"));
-            case RANDOM -> throw new UnsupportedOperationException("Chave aleatória ainda não suportada");
+                    .orElseThrow(() -> new AccountNotFoundException("Receiver account not found"));
+            case RANDOM -> throw new UnsupportedOperationException("Receiver account not found");
         };
 
         if (sender.getBalance().compareTo(request.amount()) < 0) {
-            throw new InsufficientBalanceException("Saldo insuficiente");
+            throw new InsufficientBalanceException("Amount not enough");
         }
         if (sender.getId().equals(receiver.getId())) {
-            throw new PixTransferNotAllowedException("Não é permitido transferir para si mesmo");
+            throw new PixTransferNotAllowedException("Not allowed to transfer to yourself");
         }
 
         sender.setBalance(sender.getBalance().subtract(request.amount()));
@@ -65,7 +65,7 @@ public class PixTransferService {
         transaction.setAmount(request.amount());
         transaction.setTimestamp(LocalDateTime.now());
         transaction.setStatus(PixTransactionStatus.COMPLETED);
-        transaction.setDescription("Transferência PIX realizada com sucesso!");
+        transaction.setDescription("Pix transfer completed!");
         transaction.setPixKeyType(request.pixKeyType());
         transaction.setPixKey(request.pixKey());
         pixTransactionRepository.save(transaction);
@@ -73,14 +73,14 @@ public class PixTransferService {
         // Notificações
         notificationService.notify(
                 sender.getUser(),
-                "PIX enviado", "Você enviou um PIX de R$ " +
-                        request.amount() + " para " + receiver.getUser().getEmail()
+                "PIX sent", "You submitted a PIX of R$ " +
+                        request.amount() + " to " + receiver.getUser().getEmail()
         );
 
         notificationService.notify(
                 receiver.getUser(),
-                "PIX recebido", "Você recebeu um PIX de R$ " + request.amount() +
-                        " de " + sender.getUser().getEmail()
+                "You received a PIX", "You received a PIX of R$ " + request.amount() +
+                        " from " + sender.getUser().getEmail()
         );
 
         return new PixTransferResponseDTO(

@@ -48,17 +48,17 @@ public class AccountService {
 
     public AccountBalanceResponseDTO getAccountBalance(String email){
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         Account account = accountRepository.findByUser(user)
-                .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
 
         return new AccountBalanceResponseDTO(account.getBalance());
     }
 
     public AccountDepositResponseDTO performDeposit(String email, BigDecimal amount){
         Account account = accountRepository.findByUserEmail(email)
-                .orElseThrow(() -> new AccountNotFoundException("Conta com email fornecido não encontrada"));
+                .orElseThrow(() -> new AccountNotFoundException("Could not find account for email " + email));
 
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
@@ -66,17 +66,17 @@ public class AccountService {
         // Notificação
         notificationService.notify(
                 account.getUser(),
-                "Depósito realizado", "Depósito de R$ " + amount
+                "Deposit made", "Deposit of R$ " + amount
         );
 
-        return new AccountDepositResponseDTO(account.getBalance(), "Depósito realizado com sucesso!");
+        return new AccountDepositResponseDTO(account.getBalance(), "Deposit made successfully!");
 
 
     }
 
     public List<TransactionStatementResponseDTO> getAccountStatement(String email) {
         Account account = accountRepository.findByUserEmail(email)
-                .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new AccountNotFoundException("Could not find account for email " + email));
 
         List<TransactionStatementResponseDTO> transactions = new ArrayList<>();
 
@@ -87,7 +87,7 @@ public class AccountService {
                         TransactionType.PIX_SENT,
                         pix.getAmount(),
                         pix.getTimestamp(),
-                        "PIX enviado para " + pix.getReceiver().getUser().getEmail()
+                        "PIX sent to " + pix.getReceiver().getUser().getEmail()
                 )));
 
         // PIX recebidos
@@ -97,7 +97,7 @@ public class AccountService {
                         TransactionType.PIX_RECEIVED,
                         pix.getAmount(),
                         pix.getTimestamp(),
-                        "PIX recebido de " + pix.getSender().getUser().getEmail()
+                        "PIX received of " + pix.getSender().getUser().getEmail()
                 )));
 
         // Pagamentos de boleto
@@ -107,7 +107,7 @@ public class AccountService {
                         TransactionType.BOLETO_PAYMENT,
                         boleto.getAmount(),
                         boleto.getPaymentDate(),
-                        "Pagamento de boleto"
+                        "Boleto payment"
                 )));
 
         // Investimentos
@@ -116,7 +116,7 @@ public class AccountService {
                         TransactionType.INVESTMENT,
                         investment.getAmount(),
                         investment.getInvestmentDate(),
-                        "Investimento em " + investment.getType()
+                        "Investment in " + investment.getType()
                 ))
         );
 
