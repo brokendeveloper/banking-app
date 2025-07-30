@@ -63,7 +63,7 @@ class DashboardServiceTest {
                 new TransactionStatementResponseDTO(null, new BigDecimal("500.00"), null, "desc5"),
                 new TransactionStatementResponseDTO(null, new BigDecimal("600.00"), null, "desc6")
         );
-        when(accountService.getStatement("user@email.com")).thenReturn(transactions);
+        when(accountService.getAccountStatement("user@email.com")).thenReturn(transactions);
 
         DashboardResponseDTO response = dashboardService.getDashboard("user@email.com");
 

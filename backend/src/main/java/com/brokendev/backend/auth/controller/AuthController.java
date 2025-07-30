@@ -1,4 +1,4 @@
-package com.brokendev.backend.auth.integration;
+package com.brokendev.backend.auth.controller;
 
 
 

@@ -29,7 +29,7 @@ public class DashboardService {
         var account = accountRepository.findByUser(user)
                 .orElseThrow(() -> new AccountNotFoundException("conta não encontrada"));
 
-        List<TransactionStatementResponseDTO> lastTransactions = accountService.getStatement(userEmail)
+        List<TransactionStatementResponseDTO> lastTransactions = accountService.getAccountStatement(userEmail)
                 .stream()
                 .limit(5)
                 .toList();

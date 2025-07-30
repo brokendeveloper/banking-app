@@ -1,6 +1,6 @@
 package com.brokendev.backend.controllers;
 
-import com.brokendev.backend.auth.integration.AuthController;
+import com.brokendev.backend.auth.controller.AuthController;
 import com.brokendev.backend.auth.dto.login.LoginRequestDTO;
 import com.brokendev.backend.auth.dto.login.LoginResponseDTO;
 import com.brokendev.backend.auth.dto.register.RegisterRequestDTO;
