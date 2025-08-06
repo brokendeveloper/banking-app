@@ -65,8 +65,8 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.FORBIDDEN, "Card Blocked", ex.getMessage());
     }
 
-    @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleAccountNotFound(AccountNotFoundException ex) {
+    @ExceptionHandler(UserAccountNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAccountNotFound(UserAccountNotFoundException ex) {
         return buildError(HttpStatus.NOT_FOUND, "Account Not Found", ex.getMessage());
     }
 

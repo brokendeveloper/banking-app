@@ -5,7 +5,7 @@ import com.brokendev.backend.domain.Card;
 import com.brokendev.backend.dto.card.CardBlockResponseDTO;
 import com.brokendev.backend.dto.card.CardCreateRequestDTO;
 import com.brokendev.backend.dto.card.CardResponseDTO;
-import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.common.exceptions.CardNotFoundException;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.repositories.CardRepository;
@@ -78,7 +78,7 @@ class CardServiceTest {
         CardCreateRequestDTO request = new CardCreateRequestDTO("Test User");
 
         assertThatThrownBy(() -> cardService.createCard("notfound@email.com", request))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 
@@ -100,7 +100,7 @@ class CardServiceTest {
         when(accountRepository.findByUserEmail("notfound@email.com")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> cardService.listCards("notfound@email.com"))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 

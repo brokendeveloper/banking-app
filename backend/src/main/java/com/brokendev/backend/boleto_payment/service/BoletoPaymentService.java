@@ -6,7 +6,7 @@ import com.brokendev.backend.boleto_payment.domain.BoletoPayment;
 import com.brokendev.backend.boleto_payment.domain.BoletoPaymentRepository;
 import com.brokendev.backend.boleto_payment.dto.BoletoPaymentRequestDTO;
 import com.brokendev.backend.boleto_payment.dto.BoletoPaymentResponseDTO;
-import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
 import com.brokendev.backend.enums.BoletoPaymentStatus;
 import com.brokendev.backend.services.NotificationService;
@@ -32,7 +32,7 @@ public class BoletoPaymentService {
 
     public BoletoPaymentResponseDTO payBoleto(String payerEmail, BoletoPaymentRequestDTO request) {
         Account payer = accountRepository.findByUserEmail(payerEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Could not find account with email " + payerEmail));
+                .orElseThrow(() -> new UserAccountNotFoundException("Could not find account with email " + payerEmail));
 
         if(payer.getBalance().compareTo(request.amount()) < 0) {
             throw new InsufficientBalanceException("Amount not enough to pay boleto");

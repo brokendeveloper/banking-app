@@ -7,7 +7,7 @@ import com.brokendev.backend.dto.card.CardResponseDTO;
 import com.brokendev.backend.dto.profile.UserProfileResponseDTO;
 import com.brokendev.backend.dto.profile.UserProfileUpdateDTO;
 import com.brokendev.backend.dto.profile.UserProfileUpdateResponseDTO;
-import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.infra.security.TokenService;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.repositories.CardRepository;
@@ -47,7 +47,7 @@ public class    UserService {
 
     public UserProfileResponseDTO getProfile(User user) {
         Account account = accountRepository.findByUserEmail(user.getEmail())
-                .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
 
         var cards = cardRepository.findByAccount(account)
                 .stream()

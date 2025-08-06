@@ -5,7 +5,7 @@ import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.account.domain.Account;
 import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
 import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
-import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,7 +91,7 @@ class DashboardServiceTest {
         when(accountRepository.findByUser(user)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> dashboardService.getDashboard("user@email.com"))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("conta não encontrada");
     }
 }

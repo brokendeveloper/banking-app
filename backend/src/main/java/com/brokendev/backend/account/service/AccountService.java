@@ -9,7 +9,7 @@ import com.brokendev.backend.account.dto.AccountBalanceResponseDTO;
 import com.brokendev.backend.account.dto.AccountDepositResponseDTO;
 import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
 import com.brokendev.backend.enums.TransactionType;
-import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.pix_transfer.domain.PixTransactionRepository;
 import com.brokendev.backend.repositories.*;
 import com.brokendev.backend.services.NotificationService;
@@ -51,14 +51,14 @@ public class AccountService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         Account account = accountRepository.findByUser(user)
-                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Account not found"));
 
         return new AccountBalanceResponseDTO(account.getBalance());
     }
 
     public AccountDepositResponseDTO performDeposit(String email, BigDecimal amount){
         Account account = accountRepository.findByUserEmail(email)
-                .orElseThrow(() -> new AccountNotFoundException("Could not find account for email " + email));
+                .orElseThrow(() -> new UserAccountNotFoundException("Could not find account for email " + email));
 
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
@@ -76,7 +76,7 @@ public class AccountService {
 
     public List<TransactionStatementResponseDTO> getAccountStatement(String email) {
         Account account = accountRepository.findByUserEmail(email)
-                .orElseThrow(() -> new AccountNotFoundException("Could not find account for email " + email));
+                .orElseThrow(() -> new UserAccountNotFoundException("Could not find account for email " + email));
 
         List<TransactionStatementResponseDTO> transactions = new ArrayList<>();
 

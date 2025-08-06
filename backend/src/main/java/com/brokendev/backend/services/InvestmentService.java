@@ -28,7 +28,7 @@ public class InvestmentService {
     @Transactional
     public InvestmentResponseDTO invest(String userEmail, InvestmentRequestDTO request) {
         Account investor = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
         if(investor.getBalance().compareTo(request.amount()) < 0){
             throw new InsufficientBalanceException("Saldo insuficiente para investir");
         }
@@ -66,7 +66,7 @@ public class InvestmentService {
 
     public List<InvestmentResponseDTO> listInvestments(String userEmail) {
         Account investor = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
         return investmentRepository.findByInvestor(investor)
                 .stream()
                 .map(inv -> new InvestmentResponseDTO(
@@ -84,7 +84,7 @@ public class InvestmentService {
     @Transactional
     public InvestmentResponseDTO redeemInvestment(String userEmail, Long investmentId) {
         Account investor = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
 
         Investment investment = investmentRepository.findById(investmentId)
                 .orElseThrow(() -> new InvestmentNotFoundException("Investimento não encontrado"));

@@ -6,7 +6,7 @@ import com.brokendev.backend.domain.Card;
 import com.brokendev.backend.dto.card.CardBlockResponseDTO;
 import com.brokendev.backend.dto.card.CardCreateRequestDTO;
 import com.brokendev.backend.dto.card.CardResponseDTO;
-import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.common.exceptions.CardNotFoundException;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.repositories.CardRepository;
@@ -29,7 +29,7 @@ public class CardService {
     @Transactional
     public CardResponseDTO createCard(String userEmail, CardCreateRequestDTO request) {
         Account account = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
 
         // Geração simples de número de cartão e validade
         String cardNumber = generateCardNumber();
@@ -58,7 +58,7 @@ public class CardService {
 
     public List<CardResponseDTO> listCards(String userEmail) {
         Account account = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
         return cardRepository.findByAccount(account)
                 .stream()
                 .map(card -> new CardResponseDTO(

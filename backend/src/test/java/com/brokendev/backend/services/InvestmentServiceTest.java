@@ -94,7 +94,7 @@ class InvestmentServiceTest {
         InvestmentRequestDTO request = new InvestmentRequestDTO(InvestmentType.CDB, new BigDecimal("100.00"));
 
         assertThatThrownBy(() -> investmentService.invest("notfound@email.com", request))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 
@@ -116,7 +116,7 @@ class InvestmentServiceTest {
         when(accountRepository.findByUserEmail("notfound@email.com")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> investmentService.listInvestments("notfound@email.com"))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 
@@ -139,7 +139,7 @@ class InvestmentServiceTest {
     void redeemInvestment_givenInvalidUser_whenAccountNotFound_thenThrowException() {
         when(accountRepository.findByUserEmail("notfound@email.com")).thenReturn(Optional.empty());
         assertThatThrownBy(() -> investmentService.redeemInvestment("notfound@email.com", 10L))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 

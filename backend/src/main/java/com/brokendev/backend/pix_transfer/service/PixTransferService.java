@@ -2,7 +2,7 @@ package com.brokendev.backend.pix_transfer.service;
 
 import com.brokendev.backend.account.domain.Account;
 import com.brokendev.backend.account.domain.AccountRepository;
-import com.brokendev.backend.common.exceptions.AccountNotFoundException;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
 import com.brokendev.backend.common.exceptions.PixTransferNotAllowedException;
 import com.brokendev.backend.enums.PixTransactionStatus;
@@ -35,15 +35,15 @@ public class PixTransferService {
     @Transactional
     public PixTransferResponseDTO transferPix(String senderEmail, PixTransferRequestDTO request) {
         Account sender = accountRepository.findByUserEmail(senderEmail)
-                .orElseThrow(() -> new AccountNotFoundException("Could not find account with email " + senderEmail));
+                .orElseThrow(() -> new UserAccountNotFoundException("Could not find account with email " + senderEmail));
 
         Account receiver = switch (request.pixKeyType()) {
             case EMAIL -> accountRepository.findByUserEmail(request.pixKey())
-                    .orElseThrow(() -> new AccountNotFoundException("Receiver account not found"));
+                    .orElseThrow(() -> new UserAccountNotFoundException("Receiver account not found"));
             case CPF -> accountRepository.findByUserCpf(request.pixKey())
-                    .orElseThrow(() -> new AccountNotFoundException("Receiver account not found"));
+                    .orElseThrow(() -> new UserAccountNotFoundException("Receiver account not found"));
             case PHONE -> accountRepository.findByUserTelephone(request.pixKey())
-                    .orElseThrow(() -> new AccountNotFoundException("Receiver account not found"));
+                    .orElseThrow(() -> new UserAccountNotFoundException("Receiver account not found"));
             case RANDOM -> throw new UnsupportedOperationException("Receiver account not found");
         };
 
