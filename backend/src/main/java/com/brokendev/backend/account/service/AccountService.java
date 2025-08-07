@@ -8,6 +8,7 @@ import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.account.dto.AccountBalanceResponseDTO;
 import com.brokendev.backend.account.dto.AccountDepositResponseDTO;
 import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
+import com.brokendev.backend.common.exceptions.InvalidDepositAmountException;
 import com.brokendev.backend.enums.TransactionType;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.pix_transfer.domain.PixTransactionRepository;
@@ -57,8 +58,13 @@ public class AccountService {
     }
 
     public AccountDepositResponseDTO performDeposit(String email, BigDecimal amount){
+        if(amount == null || amount.compareTo(BigDecimal.ZERO) <= 0){
+            throw new InvalidDepositAmountException("The deposit amount must be greater than zero");
+        }
+
         Account account = accountRepository.findByUserEmail(email)
                 .orElseThrow(() -> new UserAccountNotFoundException("Could not find account for email " + email));
+
 
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
