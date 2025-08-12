@@ -1,4 +1,4 @@
-package com.brokendev.backend.auth.integration;
+package com.brokendev.backend.auth.controller;
 
 import com.brokendev.backend.auth.dto.login.LoginRequestDTO;
 import com.brokendev.backend.auth.dto.register.RegisterRequestDTO;
