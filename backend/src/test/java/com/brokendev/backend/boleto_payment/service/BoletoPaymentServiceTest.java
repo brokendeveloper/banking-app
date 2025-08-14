@@ -7,6 +7,9 @@ import com.brokendev.backend.boleto_payment.domain.BoletoPaymentRepository;
 import com.brokendev.backend.boleto_payment.dto.BoletoPaymentRequestDTO;
 import com.brokendev.backend.boleto_payment.dto.BoletoPaymentResponseDTO;
 import com.brokendev.backend.common.domain.user.User;
+import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
+import com.brokendev.backend.common.exceptions.InvalidBoletoAmountException;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.enums.BoletoPaymentStatus;
 import com.brokendev.backend.services.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -90,6 +92,59 @@ class BoletoPaymentServiceTest {
                 "You paid a R$ " + requestDTO.amount() + " (code: " + requestDTO.barcode() + " )"
                 );
 
-        verifyNoMoreInteractions(boletoPaymentRepository, accountRepository, boletoPaymentRepository, notificationService);
+        verifyNoMoreInteractions(boletoPaymentRepository, accountRepository, notificationService);
+    }
+
+    @Test
+    void shouldThrowInsufficentBalanceExceptionWhenBalanceIsLessThanBoletoAmount() {
+        // given
+        BigDecimal insufficentBalanceAmount = new BigDecimal("1500.00");
+        BoletoPaymentRequestDTO invalidRequest = new BoletoPaymentRequestDTO(
+                "19920392003", insufficentBalanceAmount
+        );
+
+        when(accountRepository.findByUserEmail(testUser.getEmail())).thenReturn(Optional.of(testAccount));
+
+        // when & then
+        assertThrows(InsufficientBalanceException.class, () ->
+                boletoPaymentService.payBoleto(testUser.getEmail(), invalidRequest)
+        );
+
+        verify(accountRepository, times(1)).findByUserEmail(testUser.getEmail());
+        verifyNoMoreInteractions(accountRepository, notificationService, boletoPaymentRepository);
+    }
+
+    @Test
+    void shouldThrowUserAccountNotFoundExceptionWhenAccountDoesNotExist() {
+        // given
+        BoletoPaymentRequestDTO boletoPaymentRequestDTO = new BoletoPaymentRequestDTO(
+                "19920392003", new BigDecimal("100.00")
+        );
+        when(accountRepository.findByUserEmail(testUser.getEmail())).thenReturn(Optional.empty());
+
+        // when & then
+        assertThrows(UserAccountNotFoundException.class, () ->
+                boletoPaymentService.payBoleto(testUser.getEmail(), boletoPaymentRequestDTO)
+        );
+
+        verify(accountRepository, times(1)).findByUserEmail(testUser.getEmail());
+        verifyNoMoreInteractions(accountRepository, notificationService, boletoPaymentRepository);
+
+    }
+
+    @Test
+    void shouldThrowInvalidBoletoAmountExceptionWhenAmountIsInvalid() {
+        // given
+        BoletoPaymentRequestDTO invalidRequest = new BoletoPaymentRequestDTO(
+                "19920392003", new BigDecimal("-10.00")
+        );
+
+        // when & then
+        assertThrows(InvalidBoletoAmountException.class, () ->
+                boletoPaymentService.payBoleto(testUser.getEmail(), invalidRequest)
+        );
+
+        verifyNoMoreInteractions(accountRepository, notificationService, boletoPaymentRepository);
+
     }
 }

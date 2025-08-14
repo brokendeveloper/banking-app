@@ -6,12 +6,14 @@ import com.brokendev.backend.boleto_payment.domain.BoletoPayment;
 import com.brokendev.backend.boleto_payment.domain.BoletoPaymentRepository;
 import com.brokendev.backend.boleto_payment.dto.BoletoPaymentRequestDTO;
 import com.brokendev.backend.boleto_payment.dto.BoletoPaymentResponseDTO;
+import com.brokendev.backend.common.exceptions.InvalidBoletoAmountException;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
 import com.brokendev.backend.enums.BoletoPaymentStatus;
 import com.brokendev.backend.services.NotificationService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Service
@@ -31,6 +33,9 @@ public class BoletoPaymentService {
     }
 
     public BoletoPaymentResponseDTO payBoleto(String payerEmail, BoletoPaymentRequestDTO request) {
+        if (request.amount() == null || request.amount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidBoletoAmountException("The amount must be greater than zero");
+        }
         Account payer = accountRepository.findByUserEmail(payerEmail)
                 .orElseThrow(() -> new UserAccountNotFoundException("Could not find account with email " + payerEmail));
 
