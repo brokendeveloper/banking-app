@@ -66,6 +66,8 @@ class PixTransferServiceTest {
         receiverAccount.setUser(receiverUser);
         receiverAccount.setBalance(new BigDecimal("200.00"));
         receiverAccount.setId(20L);
+        receiverUser.setCpf("12345678901");
+        receiverUser.setTelephone("5581999999999");
 
 
         pixTransferRequestDTO = new PixTransferRequestDTO(
@@ -136,4 +138,107 @@ class PixTransferServiceTest {
 
         verifyNoMoreInteractions(pixTransactionRepository, accountRepository, notificationService);
     }
+
+    @Test
+    void shouldPerformPixTransferSuccessfullyWhenKeyTypeIsCpf(){
+        // given
+        BigDecimal transferAmount = new BigDecimal("150.00");
+        PixTransferRequestDTO pixTransferRequestDTO = new PixTransferRequestDTO(
+                receiverUser.getCpf(),
+                PixKeyType.CPF,
+                transferAmount
+        );
+
+        when(accountRepository.findByUserEmail(senderUser.getEmail())).thenReturn(Optional.of(senderAccount));
+        when(accountRepository.findByUserCpf(receiverUser.getCpf())).thenReturn(Optional.of(receiverAccount));
+
+        // when
+        PixTransferResponseDTO responseDTO = pixTransferService.transferPix(
+                senderUser.getEmail(), pixTransferRequestDTO
+        );
+
+        // then
+        assertNotNull(responseDTO);
+        assertEquals(senderUser.getEmail(), responseDTO.senderEmail());
+        assertEquals(receiverUser.getEmail(), responseDTO.receiverEmail());
+        assertEquals(transferAmount, responseDTO.amount());
+        assertEquals(PixTransactionStatus.COMPLETED, responseDTO.status());
+
+        assertEquals(new BigDecimal("850.00"), senderAccount.getBalance());
+        assertEquals(new BigDecimal("350.00"), receiverAccount.getBalance());
+
+        verify(accountRepository, times(1)).save(senderAccount);
+        verify(accountRepository, times(1)).save(receiverAccount);
+
+        ArgumentCaptor<PixTransaction> transactionCaptor = ArgumentCaptor.forClass(PixTransaction.class);
+        verify(pixTransactionRepository, times(1)).save(transactionCaptor.capture());
+        PixTransaction savedTransaction = transactionCaptor.getValue();
+        assertEquals(transferAmount, savedTransaction.getAmount());
+
+        ArgumentCaptor<String> titleCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+        verify(notificationService, times(1)).notify(
+                eq(senderUser), titleCaptor.capture(), messageCaptor.capture()
+        );
+        verify(notificationService, times(1)).notify(
+                eq(receiverUser), titleCaptor.capture(), messageCaptor.capture()
+        );
+
+        List<String> capturedMessages = messageCaptor.getAllValues();
+        assertTrue(capturedMessages.get(0).contains(transferAmount.toString()));
+        assertTrue(capturedMessages.get(1).contains(senderUser.getEmail()));
+
+        verifyNoMoreInteractions(pixTransactionRepository, accountRepository, notificationService);
+    }
+
+    @Test
+    void shouldPerformPixTransferSuccessfullyWhenKeyTypeIsPhone(){
+        // given
+        BigDecimal transferAmount = new BigDecimal("150.00");
+        PixTransferRequestDTO requestDTO = new PixTransferRequestDTO(
+                receiverUser.getTelephone(),
+                PixKeyType.PHONE,
+                transferAmount
+        );
+
+        when(accountRepository.findByUserEmail(senderUser.getEmail())).thenReturn(Optional.of(senderAccount));
+        when(accountRepository.findByUserTelephone(receiverUser.getTelephone())).thenReturn(Optional.of(receiverAccount));
+
+        // when
+        PixTransferResponseDTO response = pixTransferService.transferPix(senderUser.getEmail(), requestDTO);
+
+        // then
+        assertNotNull(response);
+        assertEquals(senderUser.getEmail(), response.senderEmail());
+        assertEquals(receiverUser.getEmail(), response.receiverEmail());
+        assertEquals(transferAmount, response.amount());
+        assertEquals(PixTransactionStatus.COMPLETED, response.status());
+
+
+        assertEquals(new BigDecimal("850.00"), senderAccount.getBalance());
+        assertEquals(new BigDecimal("350.00"), receiverAccount.getBalance());
+
+
+        verify(accountRepository, times(1)).save(senderAccount);
+        verify(accountRepository, times(1)).save(receiverAccount);
+
+
+        ArgumentCaptor<PixTransaction> transactionCaptor = ArgumentCaptor.forClass(PixTransaction.class);
+        verify(pixTransactionRepository, times(1)).save(transactionCaptor.capture());
+        PixTransaction savedTransaction = transactionCaptor.getValue();
+        assertEquals(transferAmount, savedTransaction.getAmount());
+
+
+        ArgumentCaptor<String> titleCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
+        verify(notificationService, times(1)).notify(eq(senderUser), titleCaptor.capture(), messageCaptor.capture());
+        verify(notificationService, times(1)).notify(eq(receiverUser), titleCaptor.capture(), messageCaptor.capture());
+
+        List<String> capturedMessages = messageCaptor.getAllValues();
+        assertTrue(capturedMessages.get(0).contains(transferAmount.toString()));
+        assertTrue(capturedMessages.get(1).contains(senderUser.getEmail()));
+
+        verifyNoMoreInteractions(pixTransactionRepository, accountRepository, notificationService);
+    }
 }
+
