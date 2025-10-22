@@ -263,5 +263,29 @@ class PixTransferServiceTest {
         verify(accountRepository, times(1)).findByUserEmail(senderUser.getEmail());
         verifyNoMoreInteractions(accountRepository, pixTransactionRepository, notificationService);
     }
+
+    @Test
+    void shouldThrowUserAccountNotFoundExceptionWhenReceiverAccountIsNotFound(){
+        // given
+        BigDecimal transferAmount = new BigDecimal("150.00");
+        PixTransferRequestDTO pixTransferRequestDTO = new PixTransferRequestDTO(
+                "nonexistent@example.com",
+                PixKeyType.EMAIL,
+                transferAmount
+        );
+
+        when(accountRepository.findByUserEmail(senderUser.getEmail())).thenReturn(Optional.of(senderAccount));
+        when(accountRepository.findByUserEmail("nonexistent@example.com")).thenReturn(Optional.empty());
+
+        // when & then
+        assertThrows(UserAccountNotFoundException.class, () ->
+                pixTransferService.transferPix(senderUser.getEmail(), pixTransferRequestDTO)
+        );
+
+        verify(accountRepository, times(1)).findByUserEmail(senderUser.getEmail());
+        verify(accountRepository, times(1)).findByUserEmail("nonexistent@example.com");
+
+        verifyNoMoreInteractions(accountRepository, pixTransactionRepository, notificationService);
+    }
 }
 
