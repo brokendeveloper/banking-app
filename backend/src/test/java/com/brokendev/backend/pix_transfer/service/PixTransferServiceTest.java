@@ -3,6 +3,7 @@ package com.brokendev.backend.pix_transfer.service;
 import com.brokendev.backend.account.domain.Account;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.User;
+import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.enums.PixKeyType;
 import com.brokendev.backend.enums.PixTransactionStatus;
@@ -286,6 +287,32 @@ class PixTransferServiceTest {
         verify(accountRepository, times(1)).findByUserEmail("nonexistent@example.com");
 
         verifyNoMoreInteractions(accountRepository, pixTransactionRepository, notificationService);
+    }
+
+    @Test
+    void shouldThrowInsufficientBalanceExceptionWhenTransferAmountIsGreaterThanBalance(){
+        // given
+        BigDecimal highTransferAmount = new BigDecimal("1500.00");
+        PixTransferRequestDTO requestDTO = new PixTransferRequestDTO(
+                receiverUser.getEmail(),
+                PixKeyType.EMAIL,
+                highTransferAmount
+        );
+
+        when(accountRepository.findByUserEmail(senderUser.getEmail())).thenReturn(Optional.of(senderAccount));
+        when(accountRepository.findByUserEmail(receiverUser.getEmail())).thenReturn(Optional.of(receiverAccount));
+
+        // when & then
+        assertThrows(InsufficientBalanceException.class, () ->
+                pixTransferService.transferPix(senderUser.getEmail(), requestDTO)
+        );
+
+        verify(accountRepository, times(1)).findByUserEmail(senderUser.getEmail());
+        verify(accountRepository, times(1)).findByUserEmail(receiverUser.getEmail());
+
+        verifyNoMoreInteractions(accountRepository, pixTransactionRepository, notificationService);
+
+
     }
 }
 
