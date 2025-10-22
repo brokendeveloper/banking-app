@@ -3,6 +3,7 @@ package com.brokendev.backend.pix_transfer.service;
 import com.brokendev.backend.account.domain.Account;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.User;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.enums.PixKeyType;
 import com.brokendev.backend.enums.PixTransactionStatus;
 import com.brokendev.backend.pix_transfer.domain.PixTransaction;
@@ -239,6 +240,28 @@ class PixTransferServiceTest {
         assertTrue(capturedMessages.get(1).contains(senderUser.getEmail()));
 
         verifyNoMoreInteractions(pixTransactionRepository, accountRepository, notificationService);
+    }
+
+
+    @Test
+    void shouldThrowUserAccountNotFoundExceptionWhenSenderAccountIsNotFound(){
+        // given
+        BigDecimal transferAmount = new BigDecimal("150.00");
+        PixTransferRequestDTO pixTransferRequestDTO = new PixTransferRequestDTO(
+                "anyKey",
+                PixKeyType.EMAIL,
+                transferAmount
+        );
+
+        when(accountRepository.findByUserEmail(senderUser.getEmail())).thenReturn(Optional.empty());
+
+        // when & then
+        assertThrows(UserAccountNotFoundException.class, () ->
+                pixTransferService.transferPix(senderUser.getEmail(), pixTransferRequestDTO)
+        );
+
+        verify(accountRepository, times(1)).findByUserEmail(senderUser.getEmail());
+        verifyNoMoreInteractions(accountRepository, pixTransactionRepository, notificationService);
     }
 }
 
