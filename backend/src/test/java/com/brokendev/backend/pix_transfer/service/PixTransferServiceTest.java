@@ -4,6 +4,7 @@ import com.brokendev.backend.account.domain.Account;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
+import com.brokendev.backend.common.exceptions.PixTransferNotAllowedException;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.enums.PixKeyType;
 import com.brokendev.backend.enums.PixTransactionStatus;
@@ -311,8 +312,48 @@ class PixTransferServiceTest {
         verify(accountRepository, times(1)).findByUserEmail(receiverUser.getEmail());
 
         verifyNoMoreInteractions(accountRepository, pixTransactionRepository, notificationService);
+    }
 
+    @Test
+    void shouldThrowPixTransferNotAllowedExceptionWhenTransferringToSameAccount(){
+        // given
+        BigDecimal amount = new BigDecimal("150.00");
+        PixTransferRequestDTO requestDTO = new PixTransferRequestDTO(
+                senderUser.getEmail(),
+                PixKeyType.EMAIL,
+                amount
+        );
 
+        when(accountRepository.findByUserEmail(senderUser.getEmail())).thenReturn(Optional.of(senderAccount));
+
+        // when & then
+        assertThrows(PixTransferNotAllowedException.class, () ->
+                pixTransferService.transferPix(senderUser.getEmail(), requestDTO)
+                );
+
+        verify(accountRepository, atLeastOnce()).findByUserEmail(senderUser.getEmail());
+        verifyNoMoreInteractions(pixTransactionRepository, notificationService);
+
+    }
+
+    @Test
+    void shouldThrowUnsupportedOperationExceptionWhenPixKeyTypeIsRandom() {
+        // given
+        PixTransferRequestDTO requestDTO = new PixTransferRequestDTO(
+                "random-key-123",
+                PixKeyType.RANDOM,
+                new BigDecimal("50.00")
+        );
+
+        when(accountRepository.findByUserEmail(senderUser.getEmail())).thenReturn(Optional.of(senderAccount));
+
+        // when & then
+        assertThrows(UnsupportedOperationException.class, () ->
+                pixTransferService.transferPix(senderUser.getEmail(), requestDTO)
+                );
+
+        verify(accountRepository, times(1)).findByUserEmail(senderUser.getEmail());
+        verifyNoMoreInteractions(accountRepository, notificationService);
     }
 }
 
