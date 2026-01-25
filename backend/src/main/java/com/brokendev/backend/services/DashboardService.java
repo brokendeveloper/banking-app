@@ -1,9 +1,10 @@
 package com.brokendev.backend.services;
 
-import com.brokendev.backend.dto.account.TransactionStatementResponseDTO;
+import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
+import com.brokendev.backend.account.service.AccountService;
 import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
-import com.brokendev.backend.common.exceptions.AccountNotFoundException;
-import com.brokendev.backend.common.domain.account.AccountRepository;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
+import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,9 +27,9 @@ public class DashboardService {
                 .orElseThrow(() -> new UsernameNotFoundException("usuário não encontrado"));
 
         var account = accountRepository.findByUser(user)
-                .orElseThrow(() -> new AccountNotFoundException("conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("conta não encontrada"));
 
-        List<TransactionStatementResponseDTO> lastTransactions = accountService.getStatement(userEmail)
+        List<TransactionStatementResponseDTO> lastTransactions = accountService.getAccountStatement(userEmail)
                 .stream()
                 .limit(5)
                 .toList();

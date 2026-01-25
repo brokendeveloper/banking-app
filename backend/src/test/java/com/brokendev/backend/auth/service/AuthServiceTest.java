@@ -4,7 +4,7 @@ import com.brokendev.backend.auth.dto.login.LoginRequestDTO;
 import com.brokendev.backend.auth.dto.login.LoginResponseDTO;
 import com.brokendev.backend.auth.dto.register.RegisterRequestDTO;
 import com.brokendev.backend.auth.dto.register.RegisterResponseDTO;
-import com.brokendev.backend.common.domain.account.AccountRepository;
+import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.common.domain.user.UserRepository;
 import com.brokendev.backend.common.exceptions.InvalidPasswordException;
@@ -27,7 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthServiceTest {
+class AuthServiceTest {
 
     @Mock
     private UserRepository userRepository;

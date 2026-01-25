@@ -1,11 +1,12 @@
 package com.brokendev.backend.services;
 
+import com.brokendev.backend.account.service.AccountService;
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.common.domain.account.Account;
-import com.brokendev.backend.dto.account.TransactionStatementResponseDTO;
+import com.brokendev.backend.account.domain.Account;
+import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
 import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
-import com.brokendev.backend.common.exceptions.AccountNotFoundException;
-import com.brokendev.backend.common.domain.account.AccountRepository;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
+import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +63,7 @@ class DashboardServiceTest {
                 new TransactionStatementResponseDTO(null, new BigDecimal("500.00"), null, "desc5"),
                 new TransactionStatementResponseDTO(null, new BigDecimal("600.00"), null, "desc6")
         );
-        when(accountService.getStatement("user@email.com")).thenReturn(transactions);
+        when(accountService.getAccountStatement("user@email.com")).thenReturn(transactions);
 
         DashboardResponseDTO response = dashboardService.getDashboard("user@email.com");
 
@@ -90,7 +91,7 @@ class DashboardServiceTest {
         when(accountRepository.findByUser(user)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> dashboardService.getDashboard("user@email.com"))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("conta não encontrada");
     }
 }

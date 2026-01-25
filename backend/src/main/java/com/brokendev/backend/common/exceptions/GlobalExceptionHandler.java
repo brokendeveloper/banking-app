@@ -40,6 +40,7 @@ public class GlobalExceptionHandler {
         );
     }
 
+
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleUserNotFound(UsernameNotFoundException ex) {
         return buildError(HttpStatus.NOT_FOUND, "User Not Found", ex.getMessage());
@@ -65,14 +66,19 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.FORBIDDEN, "Card Blocked", ex.getMessage());
     }
 
-    @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleAccountNotFound(AccountNotFoundException ex) {
+    @ExceptionHandler(UserAccountNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAccountNotFound(UserAccountNotFoundException ex) {
         return buildError(HttpStatus.NOT_FOUND, "Account Not Found", ex.getMessage());
     }
 
     @ExceptionHandler(InsufficientBalanceException.class)
     public ResponseEntity<ErrorResponseDTO> handleInsufficientBalance(InsufficientBalanceException ex) {
         return buildError(HttpStatus.BAD_REQUEST, "Insufficient Balance", ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidBoletoAmountException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInvalidBoletoAmount(InvalidBoletoAmountException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, "Invalid Boleto Amount", ex.getMessage());
     }
 
     @ExceptionHandler(UnauthorizedOperationException.class)
