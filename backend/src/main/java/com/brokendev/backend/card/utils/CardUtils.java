@@ -1,4 +1,4 @@
-package com.brokendev.backend.utils;
+package com.brokendev.backend.card.utils;
 
 import java.time.LocalDate;
 import java.util.Random;

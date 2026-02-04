@@ -1,16 +1,17 @@
 package com.brokendev.backend.services;
 
 import com.brokendev.backend.account.domain.Account;
+import com.brokendev.backend.card.service.CardService;
 import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.account.dto.AccountInfoResponseDTO;
-import com.brokendev.backend.dto.card.CardResponseDTO;
+import com.brokendev.backend.card.dto.CardResponseDTO;
 import com.brokendev.backend.dto.profile.UserProfileResponseDTO;
 import com.brokendev.backend.dto.profile.UserProfileUpdateDTO;
 import com.brokendev.backend.dto.profile.UserProfileUpdateResponseDTO;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.infra.security.TokenService;
 import com.brokendev.backend.account.domain.AccountRepository;
-import com.brokendev.backend.repositories.CardRepository;
+import com.brokendev.backend.card.domain.CardRepository;
 import com.brokendev.backend.common.domain.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static com.brokendev.backend.utils.CardUtils.maskCardNumber;
+import static com.brokendev.backend.card.utils.CardUtils.maskCardNumber;
 
 @Service
 public class    UserService {

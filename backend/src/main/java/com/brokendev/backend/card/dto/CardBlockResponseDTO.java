@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.card;
+package com.brokendev.backend.card.dto;
 
 public record CardBlockResponseDTO(
         Long id,

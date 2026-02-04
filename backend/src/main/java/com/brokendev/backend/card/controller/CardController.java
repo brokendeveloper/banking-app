@@ -1,10 +1,10 @@
-package com.brokendev.backend.controllers;
+package com.brokendev.backend.card.controller;
 
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.dto.card.CardBlockResponseDTO;
-import com.brokendev.backend.dto.card.CardCreateRequestDTO;
-import com.brokendev.backend.dto.card.CardResponseDTO;
-import com.brokendev.backend.services.CardService;
+import com.brokendev.backend.card.dto.CardBlockResponseDTO;
+import com.brokendev.backend.card.dto.CardCreateRequestDTO;
+import com.brokendev.backend.card.dto.CardResponseDTO;
+import com.brokendev.backend.card.service.CardService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

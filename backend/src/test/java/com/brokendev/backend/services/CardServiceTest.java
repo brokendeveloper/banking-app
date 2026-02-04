@@ -1,14 +1,15 @@
 package com.brokendev.backend.services;
 
 import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.domain.Card;
-import com.brokendev.backend.dto.card.CardBlockResponseDTO;
-import com.brokendev.backend.dto.card.CardCreateRequestDTO;
-import com.brokendev.backend.dto.card.CardResponseDTO;
+import com.brokendev.backend.card.domain.Card;
+import com.brokendev.backend.card.service.CardService;
+import com.brokendev.backend.card.dto.CardBlockResponseDTO;
+import com.brokendev.backend.card.dto.CardCreateRequestDTO;
+import com.brokendev.backend.card.dto.CardResponseDTO;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.common.exceptions.CardNotFoundException;
 import com.brokendev.backend.account.domain.AccountRepository;
-import com.brokendev.backend.repositories.CardRepository;
+import com.brokendev.backend.card.domain.CardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

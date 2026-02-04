@@ -1,7 +1,6 @@
-package com.brokendev.backend.repositories;
+package com.brokendev.backend.card.domain;
 
 import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.domain.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

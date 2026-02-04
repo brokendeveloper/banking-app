@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.card;
+package com.brokendev.backend.card.dto;
 
 import java.time.LocalDate;
 
