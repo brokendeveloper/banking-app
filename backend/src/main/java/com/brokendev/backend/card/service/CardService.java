@@ -1,15 +1,15 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.card.service;
 
 
 import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.domain.Card;
-import com.brokendev.backend.dto.card.CardBlockResponseDTO;
-import com.brokendev.backend.dto.card.CardCreateRequestDTO;
-import com.brokendev.backend.dto.card.CardResponseDTO;
+import com.brokendev.backend.card.domain.Card;
+import com.brokendev.backend.card.dto.CardBlockResponseDTO;
+import com.brokendev.backend.card.dto.CardCreateRequestDTO;
+import com.brokendev.backend.card.dto.CardResponseDTO;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.common.exceptions.CardNotFoundException;
 import com.brokendev.backend.account.domain.AccountRepository;
-import com.brokendev.backend.repositories.CardRepository;
+import com.brokendev.backend.card.domain.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,21 +17,25 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.brokendev.backend.utils.CardUtils.*;
+import static com.brokendev.backend.card.utils.CardUtils.*;
 
 @Service
-@RequiredArgsConstructor
 public class CardService {
 
     private final CardRepository cardRepository;
     private final AccountRepository accountRepository;
 
+    public CardService(CardRepository cardRepository, AccountRepository accountRepository){
+        this.cardRepository = cardRepository;
+        this.accountRepository = accountRepository;
+    }
+
     @Transactional
     public CardResponseDTO createCard(String userEmail, CardCreateRequestDTO request) {
         Account account = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Account not found"));
 
-        // Geração simples de número de cartão e validade
+        // Simple generate card
         String cardNumber = generateCardNumber();
         String expiration = generateExpiration();
         LocalDate createdAt = LocalDate.now();
@@ -58,7 +62,7 @@ public class CardService {
 
     public List<CardResponseDTO> listCards(String userEmail) {
         Account account = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Account not found"));
         return cardRepository.findByAccount(account)
                 .stream()
                 .map(card -> new CardResponseDTO(
@@ -75,19 +79,19 @@ public class CardService {
     @Transactional
     public CardBlockResponseDTO blockCard(Long cardId) {
         Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new CardNotFoundException("Cartão não encontrado"));
+                .orElseThrow(() -> new CardNotFoundException("Card not found"));
         card.setBlocked(true);
         cardRepository.save(card);
-        return new CardBlockResponseDTO(card.getId(), card.isBlocked(), "Cartão bloqueado com sucesso.");
+        return new CardBlockResponseDTO(card.getId(), card.isBlocked(), "Card succeeded blocked.");
     }
 
     @Transactional
     public CardBlockResponseDTO unblockCard(Long cardId) {
         Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new CardNotFoundException("Cartão não encontrado"));
+                .orElseThrow(() -> new CardNotFoundException("Card not found"));
         card.setBlocked(false);
         cardRepository.save(card);
-        return new CardBlockResponseDTO(card.getId(), card.isBlocked(), "Cartão desbloqueado com sucesso.");
+        return new CardBlockResponseDTO(card.getId(), card.isBlocked(), "Card succeeded unblocked.");
     }
 
 

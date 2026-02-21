@@ -1,4 +1,4 @@
-package com.brokendev.backend.domain;
+package com.brokendev.backend.card.domain;
 
 import com.brokendev.backend.account.domain.Account;
 import jakarta.persistence.*;

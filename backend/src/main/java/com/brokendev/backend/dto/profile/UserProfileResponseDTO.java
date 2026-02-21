@@ -1,7 +1,7 @@
 package com.brokendev.backend.dto.profile;
 
 import com.brokendev.backend.account.dto.AccountInfoResponseDTO;
-import com.brokendev.backend.dto.card.CardResponseDTO;
+import com.brokendev.backend.card.dto.CardResponseDTO;
 
 import java.util.List;
 
