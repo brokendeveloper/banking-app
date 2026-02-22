@@ -33,10 +33,10 @@ public class Investment {
 
     private LocalDateTime investmentDate;
 
-    private BigDecimal expectedReturn; // retorno esperado
+    private BigDecimal expectedReturn;
 
-    private LocalDateTime maturityDate; // data de resgate /vencimento
+    private LocalDateTime maturityDate;
 
-    private boolean redeemed; // caso já tenha sido resgatado.
+    private boolean redeemed;
 
 }
