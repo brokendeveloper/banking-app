@@ -1,13 +1,13 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.investment.service;
 
 import com.brokendev.backend.common.exceptions.*;
 import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.domain.Investment;
-import com.brokendev.backend.dto.investment.InvestmentRequestDTO;
-import com.brokendev.backend.dto.investment.InvestmentResponseDTO;
+import com.brokendev.backend.investment.domain.Investment;
+import com.brokendev.backend.investment.dto.InvestmentRequestDTO;
+import com.brokendev.backend.investment.dto.InvestmentResponseDTO;
 import com.brokendev.backend.enums.InvestmentType;
 import com.brokendev.backend.account.domain.AccountRepository;
-import com.brokendev.backend.repositories.InvestmentRepository;
+import com.brokendev.backend.investment.domain.InvestmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,29 +18,33 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class InvestmentService {
 
     private final InvestmentRepository investmentRepository;
 
     private final AccountRepository accountRepository;
 
+    public InvestmentService(InvestmentRepository investmentRepository, AccountRepository accountRepository){
+        this.investmentRepository = investmentRepository;
+        this.accountRepository = accountRepository;
+    }
+
     @Transactional
     public InvestmentResponseDTO invest(String userEmail, InvestmentRequestDTO request) {
         Account investor = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Account not found"));
         if(investor.getBalance().compareTo(request.amount()) < 0){
-            throw new InsufficientBalanceException("Saldo insuficiente para investir");
+            throw new InsufficientBalanceException("Insufficient balance to invest");
         }
 
-        // Debita o valor investido
+
         investor.setBalance(investor.getBalance().subtract(request.amount()));
         accountRepository.save(investor);
 
-        // Simulação de retorno e vencimento
+
         BigDecimal expectedReturn = calcularRetorno(request.type(), request.amount());
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime maturityDate = now.plus(30, ChronoUnit.DAYS); // Exemplo: 30 dias
+        LocalDateTime maturityDate = now.plus(30, ChronoUnit.DAYS);
 
         Investment investment = new Investment();
         investment.setInvestor(investor);
@@ -66,7 +70,7 @@ public class InvestmentService {
 
     public List<InvestmentResponseDTO> listInvestments(String userEmail) {
         Account investor = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Account not found"));
         return investmentRepository.findByInvestor(investor)
                 .stream()
                 .map(inv -> new InvestmentResponseDTO(
@@ -84,26 +88,26 @@ public class InvestmentService {
     @Transactional
     public InvestmentResponseDTO redeemInvestment(String userEmail, Long investmentId) {
         Account investor = accountRepository.findByUserEmail(userEmail)
-                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Account not found"));
 
         Investment investment = investmentRepository.findById(investmentId)
-                .orElseThrow(() -> new InvestmentNotFoundException("Investimento não encontrado"));
+                .orElseThrow(() -> new InvestmentNotFoundException("Investment not found"));
 
         if (!investment.getInvestor().getId().equals(investor.getId())) {
-            throw new InvestmentOwnershipException("Investimento não pertence ao usuário");
+            throw new InvestmentOwnershipException("The investment does not belong to the user.");
         }
         if (investment.isRedeemed()) {
-            throw new InvestmentAlreadyRedeemedException("Investimento já foi resgatado");
+            throw new InvestmentAlreadyRedeemedException("The investment has already been recovered.");
         }
         if (LocalDateTime.now().isBefore(investment.getMaturityDate())) {
-            throw new InvestmentNotMaturedException("Investimento ainda não venceu");
+                throw new InvestmentNotMaturedException("Investment has not yet matured");
         }
 
-        // Credita o valor de retorno na conta
+
         investor.setBalance(investor.getBalance().add(investment.getExpectedReturn()));
         accountRepository.save(investor);
 
-        // Marca como resgatado
+
         investment.setRedeemed(true);
         investmentRepository.save(investment);
 
@@ -118,7 +122,7 @@ public class InvestmentService {
         );
     }
 
-    // funçao para calcular retorno
+
     private BigDecimal calcularRetorno(InvestmentType type, BigDecimal amount) {
         double taxa = switch (type) {
             case CDB -> 1.10;
