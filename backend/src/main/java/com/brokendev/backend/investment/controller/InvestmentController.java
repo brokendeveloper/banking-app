@@ -1,9 +1,9 @@
-package com.brokendev.backend.controllers;
+package com.brokendev.backend.investment.controller;
 
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.dto.investment.InvestmentRequestDTO;
-import com.brokendev.backend.dto.investment.InvestmentResponseDTO;
-import com.brokendev.backend.services.InvestmentService;
+import com.brokendev.backend.investment.dto.InvestmentRequestDTO;
+import com.brokendev.backend.investment.dto.InvestmentResponseDTO;
+import com.brokendev.backend.investment.service.InvestmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

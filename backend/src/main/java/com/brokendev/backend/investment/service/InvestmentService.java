@@ -1,13 +1,13 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.investment.service;
 
 import com.brokendev.backend.common.exceptions.*;
 import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.domain.Investment;
-import com.brokendev.backend.dto.investment.InvestmentRequestDTO;
-import com.brokendev.backend.dto.investment.InvestmentResponseDTO;
+import com.brokendev.backend.investment.domain.Investment;
+import com.brokendev.backend.investment.dto.InvestmentRequestDTO;
+import com.brokendev.backend.investment.dto.InvestmentResponseDTO;
 import com.brokendev.backend.enums.InvestmentType;
 import com.brokendev.backend.account.domain.AccountRepository;
-import com.brokendev.backend.repositories.InvestmentRepository;
+import com.brokendev.backend.investment.domain.InvestmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

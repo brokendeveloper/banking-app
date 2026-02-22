@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.investment;
+package com.brokendev.backend.investment.dto;
 
 import com.brokendev.backend.enums.InvestmentType;
 import jakarta.validation.constraints.DecimalMin;
