@@ -5,7 +5,7 @@ import com.brokendev.backend.account.domain.Account;
 import com.brokendev.backend.investment.domain.Investment;
 import com.brokendev.backend.investment.dto.InvestmentRequestDTO;
 import com.brokendev.backend.investment.dto.InvestmentResponseDTO;
-import com.brokendev.backend.enums.InvestmentType;
+import com.brokendev.backend.common.enums.InvestmentType;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.investment.service.InvestmentService;
 import com.brokendev.backend.investment.domain.InvestmentRepository;

@@ -1,6 +1,6 @@
 package com.brokendev.backend.investment.dto;
 
-import com.brokendev.backend.enums.InvestmentType;
+import com.brokendev.backend.common.enums.InvestmentType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

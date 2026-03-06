@@ -9,7 +9,7 @@ import com.brokendev.backend.boleto_payment.dto.BoletoPaymentResponseDTO;
 import com.brokendev.backend.common.exceptions.InvalidBoletoAmountException;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
-import com.brokendev.backend.enums.BoletoPaymentStatus;
+import com.brokendev.backend.common.enums.BoletoPaymentStatus;
 import com.brokendev.backend.notification.service.NotificationService;
 import org.springframework.stereotype.Service;
 

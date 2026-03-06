@@ -1,6 +1,6 @@
 package com.brokendev.backend.boleto_payment.dto;
 
-import com.brokendev.backend.enums.BoletoPaymentStatus;
+import com.brokendev.backend.common.enums.BoletoPaymentStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

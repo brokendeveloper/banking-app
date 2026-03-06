@@ -1,4 +1,4 @@
-package com.brokendev.backend.enums;
+package com.brokendev.backend.common.enums;
 
 public enum PixKeyType {
     EMAIL,

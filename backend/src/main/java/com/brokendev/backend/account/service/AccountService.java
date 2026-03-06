@@ -9,7 +9,7 @@ import com.brokendev.backend.account.dto.AccountBalanceResponseDTO;
 import com.brokendev.backend.account.dto.AccountDepositResponseDTO;
 import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
 import com.brokendev.backend.common.exceptions.InvalidDepositAmountException;
-import com.brokendev.backend.enums.TransactionType;
+import com.brokendev.backend.common.enums.TransactionType;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.investment.domain.InvestmentRepository;
 import com.brokendev.backend.pix_transfer.domain.PixTransactionRepository;

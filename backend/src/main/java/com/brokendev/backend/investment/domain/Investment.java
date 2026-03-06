@@ -1,7 +1,7 @@
 package com.brokendev.backend.investment.domain;
 
 import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.enums.InvestmentType;
+import com.brokendev.backend.common.enums.InvestmentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

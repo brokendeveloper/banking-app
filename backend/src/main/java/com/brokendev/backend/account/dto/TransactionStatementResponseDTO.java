@@ -1,6 +1,6 @@
 package com.brokendev.backend.account.dto;
 
-import com.brokendev.backend.enums.TransactionType;
+import com.brokendev.backend.common.enums.TransactionType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

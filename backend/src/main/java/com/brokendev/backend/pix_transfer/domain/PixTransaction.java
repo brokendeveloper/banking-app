@@ -2,8 +2,8 @@ package com.brokendev.backend.pix_transfer.domain;
 
 
 import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.enums.PixKeyType;
-import com.brokendev.backend.enums.PixTransactionStatus;
+import com.brokendev.backend.common.enums.PixKeyType;
+import com.brokendev.backend.common.enums.PixTransactionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
