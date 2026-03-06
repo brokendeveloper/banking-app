@@ -1,8 +1,8 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.dashboard.service;
 
 import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
 import com.brokendev.backend.account.service.AccountService;
-import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
+import com.brokendev.backend.dashboard.dto.DashboardResponseDTO;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.UserRepository;

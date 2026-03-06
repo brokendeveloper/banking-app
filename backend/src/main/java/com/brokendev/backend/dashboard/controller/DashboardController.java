@@ -1,9 +1,9 @@
-package com.brokendev.backend.controllers;
+package com.brokendev.backend.dashboard.controller;
 
 
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.dto.dashboard.DashboardResponseDTO;
-import com.brokendev.backend.services.DashboardService;
+import com.brokendev.backend.dashboard.dto.DashboardResponseDTO;
+import com.brokendev.backend.dashboard.service.DashboardService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

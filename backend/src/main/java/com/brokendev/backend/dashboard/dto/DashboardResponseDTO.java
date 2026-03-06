@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.dashboard;
+package com.brokendev.backend.dashboard.dto;
 
 import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
 
