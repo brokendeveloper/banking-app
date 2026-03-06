@@ -10,7 +10,7 @@ import com.brokendev.backend.pix_transfer.domain.PixTransaction;
 import com.brokendev.backend.pix_transfer.domain.PixTransactionRepository;
 import com.brokendev.backend.pix_transfer.dto.PixTransferRequestDTO;
 import com.brokendev.backend.pix_transfer.dto.PixTransferResponseDTO;
-import com.brokendev.backend.services.NotificationService;
+import com.brokendev.backend.notification.service.NotificationService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

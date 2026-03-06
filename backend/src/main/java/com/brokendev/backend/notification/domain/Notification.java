@@ -1,4 +1,4 @@
-package com.brokendev.backend.domain;
+package com.brokendev.backend.notification.domain;
 
 import com.brokendev.backend.common.domain.user.User;
 import jakarta.persistence.*;

@@ -13,7 +13,7 @@ import com.brokendev.backend.enums.TransactionType;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.investment.domain.InvestmentRepository;
 import com.brokendev.backend.pix_transfer.domain.PixTransactionRepository;
-import com.brokendev.backend.services.NotificationService;
+import com.brokendev.backend.notification.service.NotificationService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 

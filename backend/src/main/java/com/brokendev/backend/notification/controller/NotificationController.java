@@ -1,9 +1,9 @@
-package com.brokendev.backend.controllers;
+package com.brokendev.backend.notification.controller;
 
 
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.dto.notification.NotificationResponseDTO;
-import com.brokendev.backend.services.NotificationService;
+import com.brokendev.backend.notification.dto.NotificationResponseDTO;
+import com.brokendev.backend.notification.service.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

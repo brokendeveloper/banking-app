@@ -11,7 +11,7 @@ import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
 import com.brokendev.backend.common.exceptions.InvalidBoletoAmountException;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.enums.BoletoPaymentStatus;
-import com.brokendev.backend.services.NotificationService;
+import com.brokendev.backend.notification.service.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

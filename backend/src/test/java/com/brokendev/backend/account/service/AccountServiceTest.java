@@ -16,7 +16,7 @@ import com.brokendev.backend.enums.*;
 import com.brokendev.backend.pix_transfer.domain.PixTransaction;
 import com.brokendev.backend.pix_transfer.domain.PixTransactionRepository;
 import com.brokendev.backend.investment.domain.InvestmentRepository;
-import com.brokendev.backend.services.NotificationService;
+import com.brokendev.backend.notification.service.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

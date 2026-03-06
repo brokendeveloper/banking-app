@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.notification;
+package com.brokendev.backend.notification.dto;
 
 import java.time.LocalDateTime;
 
