@@ -1,7 +1,7 @@
 package com.brokendev.backend.pix_transfer.dto;
 
-import com.brokendev.backend.enums.PixKeyType;
-import com.brokendev.backend.enums.PixTransactionStatus;
+import com.brokendev.backend.common.enums.PixKeyType;
+import com.brokendev.backend.common.enums.PixTransactionStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

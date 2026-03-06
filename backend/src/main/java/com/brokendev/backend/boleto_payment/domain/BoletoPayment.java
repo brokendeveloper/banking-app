@@ -1,7 +1,7 @@
 package com.brokendev.backend.boleto_payment.domain;
 
 import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.enums.BoletoPaymentStatus;
+import com.brokendev.backend.common.enums.BoletoPaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

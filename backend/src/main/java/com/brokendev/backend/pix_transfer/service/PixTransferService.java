@@ -5,12 +5,12 @@ import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.common.exceptions.InsufficientBalanceException;
 import com.brokendev.backend.common.exceptions.PixTransferNotAllowedException;
-import com.brokendev.backend.enums.PixTransactionStatus;
+import com.brokendev.backend.common.enums.PixTransactionStatus;
 import com.brokendev.backend.pix_transfer.domain.PixTransaction;
 import com.brokendev.backend.pix_transfer.domain.PixTransactionRepository;
 import com.brokendev.backend.pix_transfer.dto.PixTransferRequestDTO;
 import com.brokendev.backend.pix_transfer.dto.PixTransferResponseDTO;
-import com.brokendev.backend.services.NotificationService;
+import com.brokendev.backend.notification.service.NotificationService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

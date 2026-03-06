@@ -1,11 +1,11 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.notification.service;
 
-import com.brokendev.backend.domain.Notification;
+import com.brokendev.backend.notification.domain.Notification;
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.dto.notification.NotificationResponseDTO;
+import com.brokendev.backend.notification.dto.NotificationResponseDTO;
 import com.brokendev.backend.common.exceptions.NotificationAccessDeniedException;
 import com.brokendev.backend.common.exceptions.NotificationNotFoundException;
-import com.brokendev.backend.repositories.NotificationRepository;
+import com.brokendev.backend.notification.domain.NotificationRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,8 +29,8 @@ public class NotificationService {
         notification.setRead(false);
         notificationRepository.save(notification);
 
-        // Simulação de envio real (log)
-        System.out.printf("Notificação para %s: %s - %s%n", user.getEmail(), title, message);
+
+        System.out.printf("Notification to %s: %s - %s%n", user.getEmail(), title, message);
 
     }
 
@@ -49,9 +49,9 @@ public class NotificationService {
 
     public void markAsRead(Long notificationId, User user) {
         Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new NotificationNotFoundException("Notificação não encontrada"));
+                .orElseThrow(() -> new NotificationNotFoundException("Notification not found"));
         if (!notification.getUser().getId().equals(user.getId())) {
-            throw new NotificationAccessDeniedException("Acesso negado à notificação");
+            throw new NotificationAccessDeniedException("Access to notification denied");
         }
         notification.setRead(true);
         notificationRepository.save(notification);

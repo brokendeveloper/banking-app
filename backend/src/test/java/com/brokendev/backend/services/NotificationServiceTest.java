@@ -1,11 +1,12 @@
 package com.brokendev.backend.services;
 
-import com.brokendev.backend.domain.Notification;
+import com.brokendev.backend.notification.domain.Notification;
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.dto.notification.NotificationResponseDTO;
+import com.brokendev.backend.notification.dto.NotificationResponseDTO;
 import com.brokendev.backend.common.exceptions.NotificationAccessDeniedException;
 import com.brokendev.backend.common.exceptions.NotificationNotFoundException;
-import com.brokendev.backend.repositories.NotificationRepository;
+import com.brokendev.backend.notification.domain.NotificationRepository;
+import com.brokendev.backend.notification.service.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
