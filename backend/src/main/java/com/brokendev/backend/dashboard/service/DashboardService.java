@@ -19,7 +19,6 @@ public class DashboardService {
     private final AccountRepository accountRepository;
     private final AccountService accountService;
 
-    // Construtor público explícito para injeção de dependências (Padrão Spring)
     public DashboardService(UserRepository userRepository,
                             AccountRepository accountRepository,
                             AccountService accountService) {
