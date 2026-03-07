@@ -1,11 +1,11 @@
-package com.brokendev.backend.controllers;
+package com.brokendev.backend.profile.controller;
 
 
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.dto.profile.UserProfileResponseDTO;
-import com.brokendev.backend.dto.profile.UserProfileUpdateDTO;
-import com.brokendev.backend.dto.profile.UserProfileUpdateResponseDTO;
-import com.brokendev.backend.services.UserService;
+import com.brokendev.backend.profile.dto.UserProfileResponseDTO;
+import com.brokendev.backend.profile.dto.UserProfileUpdateDTO;
+import com.brokendev.backend.profile.dto.UserProfileUpdateResponseDTO;
+import com.brokendev.backend.profile.service.UserProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -22,9 +22,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-public class UserController {
+public class UserProfileController {
 
-    private final UserService userService;
+    private final UserProfileService userProfileService;
 
     @Operation(summary = "Verificação", description = "verifica se o usuário tem acesso autorizado")
     @GetMapping
@@ -38,7 +38,7 @@ public class UserController {
     )
     @GetMapping("/profile")
     public ResponseEntity<UserProfileResponseDTO> getProfile(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(userService.getProfile(user));
+        return ResponseEntity.ok(userProfileService.getProfile(user));
     }
 
     @Operation(
@@ -50,7 +50,7 @@ public class UserController {
             @AuthenticationPrincipal User user,
             @RequestBody @Valid UserProfileUpdateDTO dto
     ) {
-        UserProfileUpdateResponseDTO response = userService.updateProfile(user.getId(), dto);
+        UserProfileUpdateResponseDTO response = userProfileService.updateProfile(user.getId(), dto);
         return ResponseEntity.ok(response);
     }
 }

@@ -1,13 +1,13 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.profile.service;
 
 import com.brokendev.backend.account.domain.Account;
 import com.brokendev.backend.card.service.CardService;
 import com.brokendev.backend.common.domain.user.User;
 import com.brokendev.backend.account.dto.AccountInfoResponseDTO;
 import com.brokendev.backend.card.dto.CardResponseDTO;
-import com.brokendev.backend.dto.profile.UserProfileResponseDTO;
-import com.brokendev.backend.dto.profile.UserProfileUpdateDTO;
-import com.brokendev.backend.dto.profile.UserProfileUpdateResponseDTO;
+import com.brokendev.backend.profile.dto.UserProfileResponseDTO;
+import com.brokendev.backend.profile.dto.UserProfileUpdateDTO;
+import com.brokendev.backend.profile.dto.UserProfileUpdateResponseDTO;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.infra.security.TokenService;
 import com.brokendev.backend.account.domain.AccountRepository;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import static com.brokendev.backend.card.utils.CardUtils.maskCardNumber;
 
 @Service
-public class    UserService {
+public class UserProfileService {
 
     @Autowired
     private UserRepository repository;

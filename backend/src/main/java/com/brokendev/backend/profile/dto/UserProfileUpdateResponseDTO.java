@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.profile;
+package com.brokendev.backend.profile.dto;
 
 public record UserProfileUpdateResponseDTO(
         String name,

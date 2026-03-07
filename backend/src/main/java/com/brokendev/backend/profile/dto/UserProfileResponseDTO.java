@@ -1,4 +1,4 @@
-package com.brokendev.backend.dto.profile;
+package com.brokendev.backend.profile.dto;
 
 import com.brokendev.backend.account.dto.AccountInfoResponseDTO;
 import com.brokendev.backend.card.dto.CardResponseDTO;
