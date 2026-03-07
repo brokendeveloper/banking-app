@@ -5,7 +5,7 @@ import com.brokendev.backend.auth.dto.login.LoginRequestDTO;
 import com.brokendev.backend.auth.dto.login.LoginResponseDTO;
 import com.brokendev.backend.auth.dto.register.RegisterRequestDTO;
 import com.brokendev.backend.auth.dto.register.RegisterResponseDTO;
-import com.brokendev.backend.services.UserService;
+import com.brokendev.backend.profile.service.UserProfileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class AuthIntegrationTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private UserService userService;
+    private UserProfileService userProfileService;
 
     @Autowired
     private ObjectMapper objectMapper;
