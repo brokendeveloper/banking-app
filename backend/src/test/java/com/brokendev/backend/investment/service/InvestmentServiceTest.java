@@ -1,4 +1,4 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.investment.service;
 
 import com.brokendev.backend.common.exceptions.*;
 import com.brokendev.backend.account.domain.Account;
@@ -7,7 +7,6 @@ import com.brokendev.backend.investment.dto.InvestmentRequestDTO;
 import com.brokendev.backend.investment.dto.InvestmentResponseDTO;
 import com.brokendev.backend.common.enums.InvestmentType;
 import com.brokendev.backend.account.domain.AccountRepository;
-import com.brokendev.backend.investment.service.InvestmentService;
 import com.brokendev.backend.investment.domain.InvestmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

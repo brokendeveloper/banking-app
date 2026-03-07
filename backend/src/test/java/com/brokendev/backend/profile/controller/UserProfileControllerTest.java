@@ -1,6 +1,5 @@
-package com.brokendev.backend.controllers;
+package com.brokendev.backend.profile.controller;
 
-import com.brokendev.backend.profile.controller.UserProfileController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,7 +14,6 @@ public class UserProfileControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    // Se você tiver algum filtro de segurança, adicione o mock aqui também:
     @MockBean
     private com.brokendev.backend.infra.security.SecurityFilter securityFilter;
 

@@ -1,4 +1,4 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.dashboard.service;
 
 import com.brokendev.backend.account.service.AccountService;
 import com.brokendev.backend.common.domain.user.User;
@@ -8,7 +8,6 @@ import com.brokendev.backend.dashboard.dto.DashboardResponseDTO;
 import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
 import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.UserRepository;
-import com.brokendev.backend.dashboard.service.DashboardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
