@@ -1,56 +1,45 @@
 package com.brokendev.backend.profile.service;
 
-import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.card.service.CardService;
 import com.brokendev.backend.common.domain.user.User;
+import com.brokendev.backend.common.domain.user.UserRepository;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
+import com.brokendev.backend.account.domain.Account;
+import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.account.dto.AccountInfoResponseDTO;
+import com.brokendev.backend.card.domain.CardRepository;
 import com.brokendev.backend.card.dto.CardResponseDTO;
 import com.brokendev.backend.profile.dto.UserProfileResponseDTO;
 import com.brokendev.backend.profile.dto.UserProfileUpdateDTO;
 import com.brokendev.backend.profile.dto.UserProfileUpdateResponseDTO;
-import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
-import com.brokendev.backend.infra.security.TokenService;
-import com.brokendev.backend.account.domain.AccountRepository;
-import com.brokendev.backend.card.domain.CardRepository;
-import com.brokendev.backend.common.domain.user.UserRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.brokendev.backend.card.utils.CardUtils.maskCardNumber;
 
 @Service
-public class UserProfileService {
+public class ProfileService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
+    private final CardRepository cardRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private CardRepository cardRepository;
-
-    @Autowired
-    private CardService cardService;
-
-    @Autowired
-    private UserRepository userRepository;
-
+    public ProfileService(UserRepository userRepository,
+                          AccountRepository accountRepository,
+                          CardRepository cardRepository) {
+        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
+        this.cardRepository = cardRepository;
+    }
 
     public UserProfileResponseDTO getProfile(User user) {
         Account account = accountRepository.findByUserEmail(user.getEmail())
-                .orElseThrow(() -> new UserAccountNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UserAccountNotFoundException("Account not found"));
 
-        var cards = cardRepository.findByAccount(account)
+        List<CardResponseDTO> cards = cardRepository.findByAccount(account)
                 .stream()
                 .map(card -> new CardResponseDTO(
                         card.getId(),
@@ -75,7 +64,7 @@ public class UserProfileService {
     @Transactional
     public UserProfileUpdateResponseDTO updateProfile(Long userId, UserProfileUpdateDTO dto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         if (dto.name() != null) user.setName(dto.name());
         if (dto.telephone() != null) user.setTelephone(dto.telephone());
