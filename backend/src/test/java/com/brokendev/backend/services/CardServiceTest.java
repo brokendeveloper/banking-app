@@ -1,14 +1,15 @@
 package com.brokendev.backend.services;
 
-import com.brokendev.backend.domain.Account;
-import com.brokendev.backend.domain.Card;
-import com.brokendev.backend.dto.card.CardBlockResponseDTO;
-import com.brokendev.backend.dto.card.CardCreateRequestDTO;
-import com.brokendev.backend.dto.card.CardResponseDTO;
-import com.brokendev.backend.exception.AccountNotFoundException;
-import com.brokendev.backend.exception.CardNotFoundException;
-import com.brokendev.backend.repositories.AccountRepository;
-import com.brokendev.backend.repositories.CardRepository;
+import com.brokendev.backend.account.domain.Account;
+import com.brokendev.backend.card.domain.Card;
+import com.brokendev.backend.card.service.CardService;
+import com.brokendev.backend.card.dto.CardBlockResponseDTO;
+import com.brokendev.backend.card.dto.CardCreateRequestDTO;
+import com.brokendev.backend.card.dto.CardResponseDTO;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
+import com.brokendev.backend.common.exceptions.CardNotFoundException;
+import com.brokendev.backend.account.domain.AccountRepository;
+import com.brokendev.backend.card.domain.CardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,7 +79,7 @@ class CardServiceTest {
         CardCreateRequestDTO request = new CardCreateRequestDTO("Test User");
 
         assertThatThrownBy(() -> cardService.createCard("notfound@email.com", request))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 
@@ -100,7 +101,7 @@ class CardServiceTest {
         when(accountRepository.findByUserEmail("notfound@email.com")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> cardService.listCards("notfound@email.com"))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 

@@ -1,13 +1,14 @@
 package com.brokendev.backend.services;
 
-import com.brokendev.backend.domain.Account;
-import com.brokendev.backend.domain.Investment;
-import com.brokendev.backend.dto.investment.InvestmentRequestDTO;
-import com.brokendev.backend.dto.investment.InvestmentResponseDTO;
-import com.brokendev.backend.enums.InvestmentType;
-import com.brokendev.backend.exception.*;
-import com.brokendev.backend.repositories.AccountRepository;
-import com.brokendev.backend.repositories.InvestmentRepository;
+import com.brokendev.backend.common.exceptions.*;
+import com.brokendev.backend.account.domain.Account;
+import com.brokendev.backend.investment.domain.Investment;
+import com.brokendev.backend.investment.dto.InvestmentRequestDTO;
+import com.brokendev.backend.investment.dto.InvestmentResponseDTO;
+import com.brokendev.backend.common.enums.InvestmentType;
+import com.brokendev.backend.account.domain.AccountRepository;
+import com.brokendev.backend.investment.service.InvestmentService;
+import com.brokendev.backend.investment.domain.InvestmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,7 +95,7 @@ class InvestmentServiceTest {
         InvestmentRequestDTO request = new InvestmentRequestDTO(InvestmentType.CDB, new BigDecimal("100.00"));
 
         assertThatThrownBy(() -> investmentService.invest("notfound@email.com", request))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 
@@ -116,7 +117,7 @@ class InvestmentServiceTest {
         when(accountRepository.findByUserEmail("notfound@email.com")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> investmentService.listInvestments("notfound@email.com"))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 
@@ -139,7 +140,7 @@ class InvestmentServiceTest {
     void redeemInvestment_givenInvalidUser_whenAccountNotFound_thenThrowException() {
         when(accountRepository.findByUserEmail("notfound@email.com")).thenReturn(Optional.empty());
         assertThatThrownBy(() -> investmentService.redeemInvestment("notfound@email.com", 10L))
-                .isInstanceOf(AccountNotFoundException.class)
+                .isInstanceOf(UserAccountNotFoundException.class)
                 .hasMessage("Conta não encontrada");
     }
 
