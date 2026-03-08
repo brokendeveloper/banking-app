@@ -1,13 +1,14 @@
 package com.brokendev.backend.investment.service;
 
+import com.brokendev.backend.common.enums.InvestmentType;
 import com.brokendev.backend.common.exceptions.*;
 import com.brokendev.backend.account.domain.Account;
+import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.investment.domain.Investment;
+import com.brokendev.backend.investment.domain.InvestmentRepository;
 import com.brokendev.backend.investment.dto.InvestmentRequestDTO;
 import com.brokendev.backend.investment.dto.InvestmentResponseDTO;
-import com.brokendev.backend.common.enums.InvestmentType;
-import com.brokendev.backend.account.domain.AccountRepository;
-import com.brokendev.backend.investment.domain.InvestmentRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +54,6 @@ class InvestmentServiceTest {
         investment.setRedeemed(false);
     }
 
-    // invest - sucesso
     @Test
     void invest_givenValidRequest_whenSufficientBalance_thenReturnInvestmentResponse() {
         when(accountRepository.findByUserEmail("user@email.com")).thenReturn(Optional.of(account));
@@ -74,7 +74,6 @@ class InvestmentServiceTest {
         assertThat(account.getBalance()).isEqualByComparingTo("900.00");
     }
 
-    // invest - saldo insuficiente
     @Test
     void invest_givenInsufficientBalance_whenInvestAttempted_thenThrowException() {
         account.setBalance(new BigDecimal("50.00"));
@@ -84,10 +83,9 @@ class InvestmentServiceTest {
 
         assertThatThrownBy(() -> investmentService.invest("user@email.com", request))
                 .isInstanceOf(InsufficientBalanceException.class)
-                .hasMessage("Saldo insuficiente para investir");
+                .hasMessageContaining("Insufficient balance"); // Ajustado para inglês
     }
 
-    // invest - conta não encontrada
     @Test
     void invest_givenInvalidUser_whenAccountNotFound_thenThrowException() {
         when(accountRepository.findByUserEmail("notfound@email.com")).thenReturn(Optional.empty());
@@ -95,10 +93,9 @@ class InvestmentServiceTest {
 
         assertThatThrownBy(() -> investmentService.invest("notfound@email.com", request))
                 .isInstanceOf(UserAccountNotFoundException.class)
-                .hasMessage("Conta não encontrada");
+                .hasMessageContaining("Account not found");
     }
 
-    // listInvestments - sucesso
     @Test
     void listInvestments_givenValidUser_whenAccountExists_thenReturnList() {
         when(accountRepository.findByUserEmail("user@email.com")).thenReturn(Optional.of(account));
@@ -110,17 +107,15 @@ class InvestmentServiceTest {
         assertThat(list.get(0).id()).isEqualTo(10L);
     }
 
-    // listInvestments - conta não encontrada
     @Test
     void listInvestments_givenInvalidUser_whenAccountNotFound_thenThrowException() {
         when(accountRepository.findByUserEmail("notfound@email.com")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> investmentService.listInvestments("notfound@email.com"))
                 .isInstanceOf(UserAccountNotFoundException.class)
-                .hasMessage("Conta não encontrada");
+                .hasMessageContaining("Account not found");
     }
 
-    // redeemInvestment - sucesso
     @Test
     void redeemInvestment_givenValidRequest_whenMaturedAndNotRedeemed_thenReturnResponse() {
         when(accountRepository.findByUserEmail("user@email.com")).thenReturn(Optional.of(account));
@@ -134,16 +129,14 @@ class InvestmentServiceTest {
         assertThat(account.getBalance()).isEqualByComparingTo("1110.00");
     }
 
-    // redeemInvestment - conta não encontrada
     @Test
     void redeemInvestment_givenInvalidUser_whenAccountNotFound_thenThrowException() {
         when(accountRepository.findByUserEmail("notfound@email.com")).thenReturn(Optional.empty());
         assertThatThrownBy(() -> investmentService.redeemInvestment("notfound@email.com", 10L))
                 .isInstanceOf(UserAccountNotFoundException.class)
-                .hasMessage("Conta não encontrada");
+                .hasMessageContaining("Account not found"); // Ajustado para inglês
     }
 
-    // redeemInvestment - investimento não encontrado
     @Test
     void redeemInvestment_givenInvalidInvestmentId_whenNotFound_thenThrowException() {
         when(accountRepository.findByUserEmail("user@email.com")).thenReturn(Optional.of(account));
@@ -151,10 +144,9 @@ class InvestmentServiceTest {
 
         assertThatThrownBy(() -> investmentService.redeemInvestment("user@email.com", 99L))
                 .isInstanceOf(InvestmentNotFoundException.class)
-                .hasMessage("Investimento não encontrado");
+                .hasMessageContaining("Investment not found");
     }
 
-    // redeemInvestment - investimento não pertence ao usuário
     @Test
     void redeemInvestment_givenOtherUser_whenOwnershipInvalid_thenThrowException() {
         Account otherAccount = new Account();
@@ -166,10 +158,9 @@ class InvestmentServiceTest {
 
         assertThatThrownBy(() -> investmentService.redeemInvestment("user@email.com", 10L))
                 .isInstanceOf(InvestmentOwnershipException.class)
-                .hasMessage("Investimento não pertence ao usuário");
+                .hasMessageContaining("The investment does not belong to the user.");
     }
 
-    // redeemInvestment - já resgatado
     @Test
     void redeemInvestment_givenAlreadyRedeemed_whenRedeemAttempted_thenThrowException() {
         investment.setRedeemed(true);
@@ -179,10 +170,9 @@ class InvestmentServiceTest {
 
         assertThatThrownBy(() -> investmentService.redeemInvestment("user@email.com", 10L))
                 .isInstanceOf(InvestmentAlreadyRedeemedException.class)
-                .hasMessage("Investimento já foi resgatado");
+                .hasMessageContaining("The investment has already been recovered.");
     }
 
-    // redeemInvestment - não venceu ainda
     @Test
     void redeemInvestment_givenNotMatured_whenRedeemAttempted_thenThrowException() {
         investment.setMaturityDate(LocalDateTime.now().plusDays(1));
@@ -193,6 +183,6 @@ class InvestmentServiceTest {
 
         assertThatThrownBy(() -> investmentService.redeemInvestment("user@email.com", 10L))
                 .isInstanceOf(InvestmentNotMaturedException.class)
-                .hasMessage("Investimento ainda não venceu");
+                .hasMessageContaining("Investment has not yet matured");
     }
 }
