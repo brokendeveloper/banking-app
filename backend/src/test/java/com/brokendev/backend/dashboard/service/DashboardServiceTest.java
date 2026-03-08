@@ -1,13 +1,14 @@
 package com.brokendev.backend.dashboard.service;
 
-import com.brokendev.backend.account.service.AccountService;
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.account.domain.Account;
-import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
-import com.brokendev.backend.dashboard.dto.DashboardResponseDTO;
-import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
-import com.brokendev.backend.account.domain.AccountRepository;
 import com.brokendev.backend.common.domain.user.UserRepository;
+import com.brokendev.backend.common.exceptions.UserAccountNotFoundException;
+import com.brokendev.backend.account.domain.Account;
+import com.brokendev.backend.account.domain.AccountRepository;
+import com.brokendev.backend.account.dto.TransactionStatementResponseDTO;
+import com.brokendev.backend.account.service.AccountService;
+import com.brokendev.backend.dashboard.dto.DashboardResponseDTO;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,7 +50,6 @@ class DashboardServiceTest {
         account.setBalance(new BigDecimal("1000.00"));
     }
 
-    // getDashboard - sucesso
     @Test
     void getDashboard_givenValidUserEmail_whenUserAndAccountExist_thenReturnDashboard() {
         when(userRepository.findByEmail("user@email.com")).thenReturn(Optional.of(user));
@@ -74,17 +74,15 @@ class DashboardServiceTest {
         assertThat(response.lastTransactions().get(0).amount()).isEqualByComparingTo("100.00");
     }
 
-    // getDashboard - usuário não encontrado
     @Test
     void getDashboard_givenInvalidUserEmail_whenUserNotFound_thenThrowException() {
         when(userRepository.findByEmail("notfound@email.com")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> dashboardService.getDashboard("notfound@email.com"))
                 .isInstanceOf(UsernameNotFoundException.class)
-                .hasMessage("usuário não encontrado");
+                .hasMessageContaining("User not found");
     }
 
-    // getDashboard - conta não encontrada
     @Test
     void getDashboard_givenUserWithoutAccount_whenAccountNotFound_thenThrowException() {
         when(userRepository.findByEmail("user@email.com")).thenReturn(Optional.of(user));
@@ -92,6 +90,6 @@ class DashboardServiceTest {
 
         assertThatThrownBy(() -> dashboardService.getDashboard("user@email.com"))
                 .isInstanceOf(UserAccountNotFoundException.class)
-                .hasMessage("conta não encontrada");
+                .hasMessageContaining("Account not found");
     }
 }

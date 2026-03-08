@@ -135,11 +135,10 @@ class AuthIntegrationTest {
                 .andExpect(jsonPath("$.message").value("User not found"));
     }
 
-    // protected endpoint accesss tests
     @Test
     @Transactional
     void shouldNotAccessProtectedResourceWhenTokenIsMissing() throws Exception {
-        mockMvc.perform(get("/api/user"))
+        mockMvc.perform(get("/api/profile/verify")) // <-- ROTA ATUALIZADA
                 .andExpect(status().isUnauthorized());
     }
 
@@ -151,7 +150,7 @@ class AuthIntegrationTest {
         String token = loginUserAndGetToken(loginRequest);
 
 
-        mockMvc.perform(get("/api/user")
+        mockMvc.perform(get("/api/profile/verify") // <-- ROTA ATUALIZADA
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }
@@ -161,7 +160,7 @@ class AuthIntegrationTest {
     void shouldNotAccessProtectedResourceWithInvalidToken() throws Exception {
         String invalidToken = "invalid.jwt.token.string";
 
-        mockMvc.perform(get("/api/user")
+        mockMvc.perform(get("/api/profile/verify") // <-- ROTA ATUALIZADA
                         .header("Authorization", "Bearer " + invalidToken))
                 .andExpect(status().isUnauthorized());
     }
