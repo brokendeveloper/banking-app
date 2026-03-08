@@ -5,7 +5,8 @@ import com.brokendev.backend.common.exceptions.dto.ErrorResponseDTO;
 import com.brokendev.backend.profile.dto.UserProfileResponseDTO;
 import com.brokendev.backend.profile.dto.UserProfileUpdateDTO;
 import com.brokendev.backend.profile.dto.UserProfileUpdateResponseDTO;
-import com.brokendev.backend.profile.service.ProfileService;
+import com.brokendev.backend.profile.service.UserProfileService;
+
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,12 +24,12 @@ import java.util.Map;
 
 @Tag(name = "Profile", description = "Endpoints for managing the authenticated user's profile and access.")
 @RestController
-@RequestMapping("/api/profile") // Rota base alterada para refletir a Feature
+@RequestMapping("/api/profile")
 public class UserProfileController {
 
-    private final ProfileService profileService;
+    private final UserProfileService profileService;
 
-    public UserProfileController(ProfileService profileService) {
+    public UserProfileController(UserProfileService profileService) {
         this.profileService = profileService;
     }
 

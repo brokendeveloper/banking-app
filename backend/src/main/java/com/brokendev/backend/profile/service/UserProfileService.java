@@ -21,13 +21,13 @@ import java.util.List;
 import static com.brokendev.backend.card.utils.CardUtils.maskCardNumber;
 
 @Service
-public class ProfileService {
+public class UserProfileService {
 
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
     private final CardRepository cardRepository;
 
-    public ProfileService(UserRepository userRepository,
+    public UserProfileService(UserRepository userRepository,
                           AccountRepository accountRepository,
                           CardRepository cardRepository) {
         this.userRepository = userRepository;

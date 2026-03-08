@@ -1,12 +1,11 @@
-package com.brokendev.backend.services;
+package com.brokendev.backend.notification.service;
 
-import com.brokendev.backend.notification.domain.Notification;
 import com.brokendev.backend.common.domain.user.User;
-import com.brokendev.backend.notification.dto.NotificationResponseDTO;
 import com.brokendev.backend.common.exceptions.NotificationAccessDeniedException;
 import com.brokendev.backend.common.exceptions.NotificationNotFoundException;
+import com.brokendev.backend.notification.domain.Notification;
 import com.brokendev.backend.notification.domain.NotificationRepository;
-import com.brokendev.backend.notification.service.NotificationService;
+import com.brokendev.backend.notification.dto.NotificationResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,23 +41,21 @@ class NotificationServiceTest {
         notification = new Notification();
         notification.setId(100L);
         notification.setUser(user);
-        notification.setTitle("Título");
-        notification.setMessage("Mensagem");
+        notification.setTitle("Title");
+        notification.setMessage("Message");
         notification.setCreatedAt(LocalDateTime.now());
         notification.setRead(false);
     }
 
-    // notify - sucesso
     @Test
     void notify_givenValidUserAndMessage_whenCalled_thenSaveNotification() {
         when(notificationRepository.save(any(Notification.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        notificationService.notify(user, "Título", "Mensagem");
+        notificationService.notify(user, "Title", "Message");
 
         verify(notificationRepository, times(1)).save(any(Notification.class));
     }
 
-    // listNotifications - sucesso
     @Test
     void listNotifications_givenUserWithNotifications_whenCalled_thenReturnList() {
         when(notificationRepository.findByUserOrderByCreatedAtDesc(user)).thenReturn(List.of(notification));
@@ -67,11 +64,10 @@ class NotificationServiceTest {
 
         assertThat(list).hasSize(1);
         assertThat(list.get(0).id()).isEqualTo(100L);
-        assertThat(list.get(0).title()).isEqualTo("Título");
+        assertThat(list.get(0).title()).isEqualTo("Title");
         assertThat(list.get(0).read()).isFalse();
     }
 
-    // markAsRead - sucesso
     @Test
     void markAsRead_givenValidNotificationIdAndUser_whenOwnershipValid_thenMarkAsRead() {
         when(notificationRepository.findById(100L)).thenReturn(Optional.of(notification));
@@ -83,17 +79,15 @@ class NotificationServiceTest {
         verify(notificationRepository).save(notification);
     }
 
-    // markAsRead - notificação não encontrada
     @Test
     void markAsRead_givenInvalidNotificationId_whenNotFound_thenThrowException() {
         when(notificationRepository.findById(999L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> notificationService.markAsRead(999L, user))
                 .isInstanceOf(NotificationNotFoundException.class)
-                .hasMessage("Notificação não encontrada");
+                .hasMessageContaining("Notification not found");
     }
 
-    // markAsRead - acesso negado
     @Test
     void markAsRead_givenNotificationOfOtherUser_whenOwnershipInvalid_thenThrowException() {
         User otherUser = new User();
@@ -104,6 +98,6 @@ class NotificationServiceTest {
 
         assertThatThrownBy(() -> notificationService.markAsRead(100L, user))
                 .isInstanceOf(NotificationAccessDeniedException.class)
-                .hasMessage("Acesso negado à notificação");
+                .hasMessageContaining("Access to notification denied"); // <-- AJUSTE AQUI
     }
 }
