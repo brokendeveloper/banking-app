@@ -1,17 +1,34 @@
 version: '3.8'
+
 services:
   postgres:
     image: postgres:16-alpine
+    container_name: bank-postgres
     environment:
       POSTGRES_DB: bank-app
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
     ports:
-      - "5432:5432"
+      - "5434:5432"
     networks:
       - bank-network
     volumes:
       - bank-app-data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend # Aponta para a pasta onde realmente estão o Dockerfile, o pom.xml e a src/
+    container_name: bank-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - MY_SECRET_KEY=${MY_SECRET_KEY}
+    depends_on:
+      - postgres
+    networks:
+      - bank-network
 
 networks:
   bank-network:
