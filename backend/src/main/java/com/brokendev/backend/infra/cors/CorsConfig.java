@@ -9,9 +9,11 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*") // alterar ao ter porta do front.
-                .allowedMethods("GET", "POST", "DELETE", "PUT");
+        registry.addMapping("/api/**")
+                .allowedOrigins("http://localhost:3000", "http://localhost:8081")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS" )
+                .allowedHeaders("*")
+                .allowCredentials(true);
 
         registry.addMapping("/swagger-ui/**").allowedOrigins("*");
         registry.addMapping("/v3/api-docs/**").allowedOrigins("*");
