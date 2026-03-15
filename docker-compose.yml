@@ -30,6 +30,30 @@ services:
     networks:
       - bank-network
 
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: bank-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - bank-network
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana:10.1.0
+    container_name: bank-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin # Senha temporária para você logar na primeira vez
+    networks:
+      - bank-network
+    depends_on:
+      - prometheus
+
 networks:
   bank-network:
     driver: bridge
