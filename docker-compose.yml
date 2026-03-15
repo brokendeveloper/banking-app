@@ -16,7 +16,7 @@ services:
       - bank-app-data:/var/lib/postgresql/data
 
   backend:
-    build: ./backend # Aponta para a pasta onde realmente estão o Dockerfile, o pom.xml e a src/
+    build: ./backend
     container_name: bank-backend
     ports:
       - "8080:8080"
@@ -46,9 +46,9 @@ services:
     image: grafana/grafana:10.1.0
     container_name: bank-grafana
     ports:
-      - "3000:3000"
+      - "3030:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin # Senha temporária para você logar na primeira vez
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
       - bank-network
     depends_on:
