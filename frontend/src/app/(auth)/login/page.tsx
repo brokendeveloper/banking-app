@@ -2,58 +2,64 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation"; 
+import Link from "next/link"; 
+import toast from "react-hot-toast"; 
 import { authService } from "@/app/modules/auth/service/auth.service";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
 
-    try {
-      const response = await authService.login({ email, password });
-      console.log("Login successful, token:", response.token);
-      alert("Login successful!");
-
-      router.push("/dashboard");
-    } catch (error) {
-      console.error("Login failed:", error);
-      setError("Invalid email or password. Please try again.");
-    } finally {
+    
+    toast.promise(
+      authService.login({ email, password }),
+      {
+        loading: 'Authenticating...',
+        success: (response) => {
+          console.log("Token:", response.token); 
+          router.push("/dashboard");
+          return 'Welcome back!'; 
+        },
+        error: 'Invalid credentials. Please try again.',
+      }
+    ).finally(() => {
       setIsLoading(false);
-    }
+    });
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-900 px-4">
-      <div className="w-full max-w-md space-y-8 rounded-xl bg-slate-800 p-8 shadow-2xl">
+   
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 px-4">
+      
+      
+      <div className="w-full max-w-md space-y-8 rounded-2xl bg-slate-900/50 p-8 shadow-2xl backdrop-blur-xl border border-slate-700/50">
         
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white">Welcome back</h2>
-          <p className="mt-2 text-sm text-slate-400">Access your digital bank account</p>
+          <h2 className="text-3xl font-extrabold tracking-tight text-white">Sign In</h2>
+          <p className="mt-2 text-sm text-indigo-200/70">Access your secure digital vault</p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <div className="space-y-4 rounded-md shadow-sm">
+          <div className="space-y-5">
             
             {/* Email Field */}
             <div>
-              <label className="sr-only" htmlFor="email">Email</label>
+              <label className="mb-2 block text-sm font-medium text-slate-300" htmlFor="email">Email Address</label>
               <input
                 id="email"
                 type="email"
                 required
-                className="block w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-                placeholder="Your email"
+                className="block w-full rounded-xl border border-slate-700/50 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} 
               />
@@ -61,37 +67,39 @@ export default function LoginPage() {
 
             {/* Password Field */}
             <div>
-              <label className="sr-only" htmlFor="password">Password</label>
+              <label className="mb-2 block text-sm font-medium text-slate-300" htmlFor="password">Password</label>
               <input
                 id="password"
                 type="password"
                 required
-                className="block w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-white placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-                placeholder="Your password"
+                className="block w-full rounded-xl border border-slate-700/50 bg-slate-900/50 px-4 py-3 text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
 
-          {/* Conditional Error Message */}
-          {error && (
-            <div className="text-sm text-red-500 text-center font-medium">
-              {error}
-            </div>
-          )}
-
           {/* Submit Button */}
-          <div>
+          <div className="pt-2">
             <button
               type="submit"
               disabled={isLoading}
-              className="flex w-full justify-center rounded-lg border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors"
+              className="flex w-full justify-center rounded-xl bg-indigo-600 px-4 py-3 text-sm font-bold text-white shadow-lg hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-70 disabled:cursor-not-allowed transition-all transform active:scale-[0.98]"
             >
-              {isLoading ? "Signing in..." : "Sign in"}
+              {isLoading ? "Verifying..." : "Sign in securely"}
             </button>
           </div>
         </form>
+
+        {/* 3. Link de Navegação Elegante */}
+        <p className="text-center text-sm text-slate-400 mt-6">
+          Don't have an account?{" "}
+          <Link href="/register" className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">
+            Open an account
+          </Link>
+        </p>
+
       </div>
     </main>
   );
