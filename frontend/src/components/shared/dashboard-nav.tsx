@@ -10,7 +10,6 @@ import {
   TrendingUp,
   Bell,
   User,
-  Building2,
   Receipt,
   LogOut,
 } from "lucide-react";
@@ -32,7 +31,6 @@ const navItems = [
   { href: "/perfil", label: "Perfil", icon: User },
 ];
 
-// Items for bottom navigation (mobile) - main 4
 const bottomNavItems = navItems.slice(0, 4);
 
 function NavLink({
@@ -58,7 +56,7 @@ function NavLink({
       <Link
         href={href}
         className={cn(
-          "flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-colors min-w-0",
+          "flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors duration-150 min-w-0",
           isActive
             ? "text-primary"
             : "text-muted-foreground hover:text-foreground"
@@ -84,10 +82,10 @@ function NavLink({
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
+        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150",
         isActive
-          ? "bg-primary/10 text-primary"
-          : "text-muted-foreground hover:bg-accent hover:text-foreground"
+          ? "bg-primary/8 text-primary font-medium"
+          : "text-muted-foreground font-normal hover:bg-accent hover:text-foreground"
       )}
     >
       <div className="relative">
@@ -118,13 +116,10 @@ export function DashboardSidebar() {
   };
 
   return (
-    <aside className="hidden md:flex flex-col w-60 min-h-screen border-r border-border/50 bg-sidebar p-4 gap-1 sticky top-0">
+    <aside className="hidden md:flex flex-col w-56 min-h-screen border-r border-border/50 bg-sidebar p-4 gap-1 sticky top-0">
       {/* Logo */}
-      <Link href="/dashboard" className="flex items-center gap-2.5 px-2 py-3 mb-4">
-        <div className="flex items-center justify-center size-8 rounded-lg bg-primary/10">
-          <Building2 className="size-4 text-primary" />
-        </div>
-        <span className="font-bold text-lg">Cesar Bank</span>
+      <Link href="/dashboard" className="flex items-center gap-2.5 px-2 py-4 mb-2">
+        <span className="text-sm font-semibold tracking-tight text-foreground">Cesar Bank</span>
       </Link>
 
       {/* Nav */}
@@ -140,21 +135,21 @@ export function DashboardSidebar() {
       </nav>
 
       {/* User + Logout */}
-      <div className="border-t border-border/50 pt-4 space-y-2">
+      <div className="border-t border-border/40 pt-4 space-y-2">
         {user && (
-          <div className="px-3 py-2">
-            <p className="text-sm font-medium truncate">{user.name}</p>
-            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+          <div className="px-3 py-1.5">
+            <p className="text-xs font-medium truncate text-foreground/80">{user.name}</p>
+            <p className="text-xs text-muted-foreground/60 truncate mt-0.5">{user.email}</p>
           </div>
         )}
         <Button
           variant="ghost"
           size="sm"
-          className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive"
+          className="w-full justify-start gap-2.5 text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-colors duration-150"
           onClick={handleLogout}
         >
-          <LogOut className="size-4" />
-          Sair
+          <LogOut className="size-3.5" />
+          Sair da conta
         </Button>
       </div>
     </aside>
@@ -165,7 +160,7 @@ export function DashboardBottomNav() {
   const { data: unreadCount } = useNotificationCount();
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border/50 bg-card/95 backdrop-blur-sm px-2 py-1 safe-area-pb">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border/40 bg-background/95 backdrop-blur-sm px-2 py-2 safe-area-pb">
       {bottomNavItems.map((item) => (
         <NavLink
           key={item.href}
