@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, TrendingUp } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,56 +19,55 @@ export function BalanceCard({ balance = 0, name, isLoading }: BalanceCardProps) 
 
   if (isLoading) {
     return (
-      <Card className="bg-primary text-primary-foreground border-0 shadow-xl">
+      <Card className="border-border/50">
         <CardContent className="p-6 space-y-4">
-          <Skeleton className="h-4 w-32 bg-primary-foreground/20" />
-          <Skeleton className="h-10 w-48 bg-primary-foreground/20" />
-          <Skeleton className="h-4 w-24 bg-primary-foreground/20" />
+          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-9 w-40" />
+          <Skeleton className="h-3 w-20" />
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground border-0 shadow-xl shadow-primary/25 overflow-hidden relative">
-      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-16 translate-x-16" />
-      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-8" />
-      <CardContent className="p-6 relative">
-        <div className="flex items-center justify-between mb-4">
-          <div>
+    <Card className="border-border/50 bg-card">
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between mb-5">
+          <div className="space-y-0.5">
             {name && (
-              <p className="text-primary-foreground/70 text-sm font-medium">
+              <p className="text-xs text-muted-foreground font-medium">
                 Olá, {name.split(" ")[0]}
               </p>
             )}
-            <p className="text-primary-foreground/80 text-xs mt-0.5">Saldo disponível</p>
+            <p className="text-xs text-muted-foreground/60 tracking-wide uppercase">
+              Saldo disponível
+            </p>
           </div>
           <Button
             variant="ghost"
             size="icon"
-            className="text-primary-foreground/70 hover:text-primary-foreground hover:bg-primary-foreground/10"
+            className="size-7 text-muted-foreground/50 hover:text-muted-foreground hover:bg-transparent transition-colors duration-150 -mt-1 -mr-1"
             onClick={() => setVisible((v) => !v)}
           >
-            {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+            {visible ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
           </Button>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-5">
           {visible ? (
-            <p className="text-4xl font-bold tracking-tight">
-              <AnimatedNumber
-                value={balance}
-                formatter={formatCurrency}
-              />
+            <p className="text-4xl font-semibold tracking-tight text-foreground">
+              <AnimatedNumber value={balance} formatter={formatCurrency} />
             </p>
           ) : (
-            <p className="text-4xl font-bold tracking-tight">R$ ••••••</p>
+            <p className="text-4xl font-semibold tracking-tight text-foreground">
+              R$ ••••••
+            </p>
           )}
         </div>
 
-        <div className="flex items-center gap-1.5 text-primary-foreground/70 text-xs">
-          <TrendingUp className="size-3" />
-          <span>Conta corrente ativa</span>
+        <div className="flex items-center gap-2 pt-4 border-t border-border/40">
+          <span className="inline-block size-1.5 rounded-full bg-primary" />
+          <span className="text-xs text-muted-foreground">Conta corrente ativa</span>
         </div>
       </CardContent>
     </Card>

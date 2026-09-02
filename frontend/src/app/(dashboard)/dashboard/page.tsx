@@ -15,17 +15,24 @@ export default function DashboardPage() {
   const { data: unreadCount } = useNotificationCount();
 
   return (
-    <div className="flex flex-col gap-4 p-4 max-w-2xl mx-auto w-full">
+    <div className="flex flex-col gap-4 p-5 max-w-2xl mx-auto w-full">
       {/* Header mobile */}
-      <div className="flex items-center justify-between md:hidden">
+      <div className="flex items-center justify-between md:hidden py-1">
         <div>
-          <p className="text-xs text-muted-foreground">Cesar Bank</p>
+          <p className="text-[10px] font-medium text-muted-foreground/50 tracking-widest uppercase">Cesar Bank</p>
           {data?.name && (
-            <p className="text-sm font-semibold">Olá, {data.name.split(" ")[0]}</p>
+            <p className="text-sm font-medium text-foreground/80 mt-0.5">
+              Olá, {data.name.split(" ")[0]}
+            </p>
           )}
         </div>
-        <Button variant="ghost" size="icon" render={<Link href="/notificacoes" className="relative" />}>
-          <Bell className="size-5" />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-8 text-muted-foreground/50 hover:text-muted-foreground hover:bg-transparent transition-colors duration-150"
+          render={<Link href="/notificacoes" className="relative" />}
+        >
+          <Bell className="size-4" />
           {unreadCount && unreadCount > 0 ? (
             <Badge
               variant="destructive"
