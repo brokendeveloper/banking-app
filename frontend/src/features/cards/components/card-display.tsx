@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Lock, Unlock, Wifi } from "lucide-react";
+import { Lock, Unlock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,41 +26,63 @@ function CreditCardVisual({ card }: { card: CardResponse }) {
   return (
     <div
       className={cn(
-        "relative w-full aspect-[1.586/1] rounded-2xl p-5 overflow-hidden select-none",
-        "bg-gradient-to-br from-primary to-primary/60 text-primary-foreground shadow-xl shadow-primary/30",
-        card.blocked && "from-muted-foreground/40 to-muted-foreground/20 shadow-none"
+        "relative w-full aspect-[1.586/1] rounded-xl p-5 overflow-hidden select-none",
+        "text-white/90 shadow-md",
+        card.blocked
+          ? "bg-[#1c1c1e]"
+          : "bg-[#1a1a1a]"
       )}
+      style={{
+        backgroundImage: card.blocked
+          ? "none"
+          : "linear-gradient(135deg, #1f1f1f 0%, #111111 100%)",
+      }}
     >
-      <div className="absolute -top-8 -right-8 size-32 rounded-full bg-white/10" />
-      <div className="absolute -bottom-8 -left-8 size-28 rounded-full bg-white/5" />
+      {/* Subtle texture lines */}
+      <div className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.5) 2px, rgba(255,255,255,0.5) 3px)",
+          backgroundSize: "100% 4px"
+        }}
+      />
 
       <div className="relative h-full flex flex-col justify-between">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <div className="size-7 rounded-full bg-yellow-400/80" />
-            <div className="size-7 rounded-full bg-orange-400/60 -ml-3.5" />
+        <div className="flex items-start justify-between">
+          <div className="space-y-0.5">
+            <p className="text-[9px] tracking-widest uppercase text-white/30 font-medium">
+              Cesar Bank
+            </p>
           </div>
           {card.blocked ? (
-            <Badge variant="destructive" className="text-[10px] font-bold">BLOQUEADO</Badge>
+            <Badge className="text-[9px] font-medium bg-white/10 text-white/50 border-white/10 rounded-md">
+              Bloqueado
+            </Badge>
           ) : (
-            <Wifi className="size-5 rotate-90 opacity-70" />
+            <div className="flex gap-0.5 items-center">
+              <div className="size-5 rounded-full bg-white/20" />
+              <div className="size-5 rounded-full bg-white/10 -ml-2" />
+            </div>
           )}
         </div>
 
         <div className="space-y-3">
-          <p className="font-mono text-lg tracking-widest font-semibold opacity-90">
+          <p className="font-mono text-base tracking-[0.2em] font-medium text-white/80">
             {maskCardNumber(card.cardNumber)}
           </p>
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-[9px] uppercase opacity-60 font-medium">Titular</p>
-              <p className="text-sm font-bold uppercase tracking-wide truncate max-w-[160px]">
+              <p className="text-[8px] uppercase text-white/30 font-medium tracking-wider mb-0.5">
+                Titular
+              </p>
+              <p className="text-xs font-semibold uppercase tracking-wide truncate max-w-[160px] text-white/80">
                 {card.holderName}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-[9px] uppercase opacity-60 font-medium">Validade</p>
-              <p className="text-sm font-bold">{card.expiration}</p>
+              <p className="text-[8px] uppercase text-white/30 font-medium tracking-wider mb-0.5">
+                Validade
+              </p>
+              <p className="text-xs font-semibold text-white/80">{card.expiration}</p>
             </div>
           </div>
         </div>
@@ -78,23 +100,23 @@ export function CardDisplay({ card }: CardDisplayProps) {
       <CreditCardVisual card={card} />
       <div className="flex items-center justify-between px-1">
         <div>
-          <p className="text-sm font-medium">{card.holderName}</p>
-          <p className="text-xs text-muted-foreground">
-            {card.blocked ? "Cartão bloqueado" : "Cartão ativo"}
+          <p className="text-sm font-medium text-foreground/80">{card.holderName}</p>
+          <p className="text-xs text-muted-foreground/60 mt-0.5">
+            {card.blocked ? "Bloqueado" : "Ativo"}
           </p>
         </div>
         <AlertDialog open={open} onOpenChange={setOpen}>
           <Button
-            variant={card.blocked ? "default" : "outline"}
+            variant="outline"
             size="sm"
             disabled={isPending}
-            className="gap-2"
+            className="gap-2 text-xs border-border/60 hover:border-border transition-colors duration-150"
             onClick={() => setOpen(true)}
           >
             {card.blocked ? (
-              <><Unlock className="size-3.5" />Desbloquear</>
+              <><Unlock className="size-3" />Desbloquear</>
             ) : (
-              <><Lock className="size-3.5" />Bloquear</>
+              <><Lock className="size-3" />Bloquear</>
             )}
           </Button>
           <AlertDialogContent>
@@ -104,7 +126,7 @@ export function CardDisplay({ card }: CardDisplayProps) {
               </AlertDialogTitle>
               <AlertDialogDescription>
                 {card.blocked
-                  ? "O cartão voltará a funcionar normalmente para compras e pagamentos."
+                  ? "O cartão voltará a funcionar normalmente."
                   : "O cartão ficará temporariamente inativo. Você pode desbloquear a qualquer momento."}
               </AlertDialogDescription>
             </AlertDialogHeader>
@@ -115,9 +137,9 @@ export function CardDisplay({ card }: CardDisplayProps) {
                   toggleBlock({ id: card.id, blocked: card.blocked });
                   setOpen(false);
                 }}
-                className={card.blocked ? "" : "bg-destructive hover:bg-destructive/90"}
+                className={card.blocked ? "" : "bg-destructive hover:bg-destructive/90 text-white"}
               >
-                {card.blocked ? "Sim, desbloquear" : "Sim, bloquear"}
+                {card.blocked ? "Desbloquear" : "Bloquear"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
