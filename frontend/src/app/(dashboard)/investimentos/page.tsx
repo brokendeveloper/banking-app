@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -49,55 +49,59 @@ const typeLabels: Record<string, string> = {
   POUPANCA: "Poupança",
 };
 
-const typeColors: Record<string, string> = {
-  CDB: "bg-primary/10 text-primary",
-  TESOURO_DIRETO: "bg-emerald-500/10 text-emerald-500",
-  LCI: "bg-amber-500/10 text-amber-500",
-  LCA: "bg-sky-500/10 text-sky-500",
-  POUPANCA: "bg-violet-500/10 text-violet-500",
-};
-
 function InvestmentCard({ investment }: { investment: InvestmentResponse }) {
   const { mutate: redeem, isPending } = useRedeemInvestment();
 
   return (
-    <Card className={cn("transition-opacity", investment.redeemed && "opacity-60")}>
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between gap-3 mb-3">
+    <Card className={cn(
+      "border-border/50 transition-opacity duration-150",
+      investment.redeemed && "opacity-50"
+    )}>
+      <CardContent className="p-5">
+        <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-2">
-            <Badge className={cn("text-xs font-bold", typeColors[investment.type])}>
+            <Badge
+              variant="outline"
+              className="text-[10px] font-semibold border-border/60 text-muted-foreground rounded-md"
+            >
               {typeLabels[investment.type]}
             </Badge>
             {investment.redeemed && (
-              <Badge variant="secondary" className="text-xs gap-1">
+              <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground/60">
                 <CheckCircle2 className="size-3" />
                 Resgatado
-              </Badge>
+              </span>
             )}
           </div>
-          <p className="text-lg font-bold">{formatCurrency(investment.amount)}</p>
+          <p className="text-base font-semibold tracking-tight">{formatCurrency(investment.amount)}</p>
         </div>
-        <div className="space-y-1 text-xs text-muted-foreground mb-3">
+        <div className="space-y-2 text-xs text-muted-foreground/70 mb-4">
           <div className="flex justify-between">
             <span>Aplicado em</span>
-            <span className="text-foreground">{formatDate(investment.investmentDate)}</span>
+            <span className="text-foreground/70">{formatDate(investment.investmentDate)}</span>
           </div>
           <div className="flex justify-between">
             <span>Vencimento</span>
-            <span className="text-foreground">{formatDate(investment.maturityDate)}</span>
+            <span className="text-foreground/70">{formatDate(investment.maturityDate)}</span>
           </div>
           <div className="flex justify-between">
             <span>Retorno esperado</span>
-            <span className="text-emerald-500 font-medium">{formatCurrency(investment.expectedReturn)}</span>
+            <span className="text-primary font-medium">{formatCurrency(investment.expectedReturn)}</span>
           </div>
         </div>
         {!investment.redeemed && (
           <AlertDialog>
             <AlertDialogTrigger
-              render={<Button variant="outline" size="sm" className="w-full gap-2" />}
+              render={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full gap-1.5 border-border/60 text-xs font-medium hover:bg-muted/60 transition-colors duration-150"
+                />
+              }
               disabled={isPending}
             >
-              <ArrowUpFromLine className="size-3.5" />
+              <ArrowUpFromLine className="size-3" />
               Resgatar
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -137,8 +141,13 @@ function CreateInvestmentDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button className="gap-2" />}>
-        <Plus className="size-4" />
+      <DialogTrigger render={
+        <Button
+          size="sm"
+          className="gap-1.5 text-xs font-medium bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-150"
+        />
+      }>
+        <Plus className="size-3.5" />
         Investir
       </DialogTrigger>
       <DialogContent>
@@ -146,10 +155,15 @@ function CreateInvestmentDialog() {
           <DialogTitle>Novo investimento</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit((data) => { create(data); reset(); })} className="space-y-4">
-          <div className="space-y-2">
-            <Label>Tipo de investimento</Label>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              Tipo de investimento
+            </Label>
             <Select onValueChange={(v) => setValue("type", v as CreateInvestmentFormData["type"])}>
-              <SelectTrigger className={errors.type ? "border-destructive" : ""}>
+              <SelectTrigger className={cn(
+                "h-10 border-border/60 text-sm",
+                errors.type && "border-destructive/60"
+              )}>
                 <SelectValue placeholder="Selecione o tipo" />
               </SelectTrigger>
               <SelectContent>
@@ -158,25 +172,40 @@ function CreateInvestmentDialog() {
                 ))}
               </SelectContent>
             </Select>
-            {errors.type && <p className="text-xs text-destructive">{errors.type.message}</p>}
+            {errors.type && <p className="text-xs text-destructive/80">{errors.type.message}</p>}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="inv-amount">Valor (R$)</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="inv-amount" className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              Valor (R$)
+            </Label>
             <Input
               id="inv-amount"
               type="number"
               step="0.01"
               min="0.01"
               placeholder="0,00"
-              className={errors.amount ? "border-destructive" : ""}
+              className={cn(
+                "h-10 border-border/60 text-sm",
+                errors.amount && "border-destructive/60"
+              )}
               {...register("amount", { valueAsNumber: true })}
             />
-            {errors.amount && <p className="text-xs text-destructive">{errors.amount.message}</p>}
+            {errors.amount && <p className="text-xs text-destructive/80">{errors.amount.message}</p>}
           </div>
         </form>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
-          <Button onClick={handleSubmit((data) => { create(data); reset(); })} disabled={isPending}>
+          <Button
+            variant="outline"
+            className="border-border/60 text-sm"
+            onClick={() => setOpen(false)}
+          >
+            Cancelar
+          </Button>
+          <Button
+            className="text-sm bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-150"
+            onClick={handleSubmit((data) => { create(data); reset(); })}
+            disabled={isPending}
+          >
             {isPending ? "Investindo..." : "Confirmar"}
           </Button>
         </DialogFooter>
@@ -191,13 +220,11 @@ export default function InvestimentosPage() {
   const redeemed = investments?.filter((i) => i.redeemed) ?? [];
 
   return (
-    <div className="flex flex-col gap-6 p-4 max-w-2xl mx-auto w-full">
+    <div className="flex flex-col gap-6 p-6 max-w-2xl mx-auto w-full">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center size-10 rounded-xl bg-emerald-400/10">
-            <TrendingUp className="size-5 text-emerald-400" />
-          </div>
-          <h1 className="text-xl font-bold">Investimentos</h1>
+        <div>
+          <h1 className="text-lg font-semibold tracking-tight">Investimentos</h1>
+          <p className="text-xs text-muted-foreground/60 mt-0.5">Seu patrimônio aplicado</p>
         </div>
         <CreateInvestmentDialog />
       </div>
@@ -205,24 +232,24 @@ export default function InvestimentosPage() {
       {isLoading ? (
         <div className="grid gap-3 sm:grid-cols-2">
           {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-36 rounded-xl" />
+            <Skeleton key={i} className="h-36 rounded-lg" />
           ))}
         </div>
       ) : !investments?.length ? (
-        <div className="text-center py-16 space-y-3">
-          <div className="flex items-center justify-center size-16 rounded-2xl bg-muted mx-auto">
-            <TrendingUp className="size-8 text-muted-foreground" />
+        <div className="text-center py-20 space-y-4">
+          <div className="flex items-center justify-center size-14 rounded-xl bg-muted/60 mx-auto">
+            <TrendingUp className="size-6 text-muted-foreground/50" />
           </div>
-          <p className="text-sm text-muted-foreground">
-            Você ainda não tem investimentos. <br />
-            Comece a investir agora!
-          </p>
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-foreground/70">Nenhum investimento ainda</p>
+            <p className="text-xs text-muted-foreground/50">Comece a investir para ver seu dinheiro crescer.</p>
+          </div>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {active.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+              <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-3">
                 Ativos ({active.length})
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -234,7 +261,7 @@ export default function InvestimentosPage() {
           )}
           {redeemed.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+              <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-3">
                 Resgatados ({redeemed.length})
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
