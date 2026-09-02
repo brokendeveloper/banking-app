@@ -16,12 +16,12 @@ export default function MarketingLayout({
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            <Link href="#features" className="hover:text-foreground transition-colors duration-150">
+            <a href="#features" className="hover:text-foreground transition-colors duration-150">
               Funcionalidades
-            </Link>
-            <Link href="#about" className="hover:text-foreground transition-colors duration-150">
-              Sobre
-            </Link>
+            </a>
+            <a href="#how-it-works" className="hover:text-foreground transition-colors duration-150">
+              Como funciona
+            </a>
           </nav>
 
           <div className="flex items-center gap-2">
