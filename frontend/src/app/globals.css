@@ -7,9 +7,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-display);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,83 +40,89 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  /* Radius: reduced for refined look */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 12px;
+  --radius-3xl: 16px;
+  --radius-4xl: 20px;
 }
 
-/* Cesar Bank — tema violet/roxo como cor de destaque */
+/* Cesar Bank — Fintech Premium. Paleta monocromática + acento sálvia */
 :root {
   --background: oklch(0.985 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklch(0.09 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.09 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.559 0.218 277.117);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.94 0.04 277);
-  --accent-foreground: oklch(0.4 0.18 277);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.559 0.218 277.117);
-  --chart-1: oklch(0.559 0.218 277.117);
-  --chart-2: oklch(0.6 0.2 200);
-  --chart-3: oklch(0.7 0.15 160);
-  --chart-4: oklch(0.65 0.18 30);
-  --chart-5: oklch(0.6 0.22 310);
-  --radius: 0.625rem;
+  --popover-foreground: oklch(0.09 0 0);
+  /* Acento único: Verde Sálvia */
+  --primary: oklch(0.42 0.085 152);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.25 0 0);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.56 0 0);
+  --accent: oklch(0.94 0 0);
+  --accent-foreground: oklch(0.25 0 0);
+  --destructive: oklch(0.55 0.20 27);
+  --border: oklch(0.90 0 0);
+  --input: oklch(0.90 0 0);
+  --ring: oklch(0.42 0.085 152);
+  --chart-1: oklch(0.42 0.085 152);
+  --chart-2: oklch(0.60 0.07 200);
+  --chart-3: oklch(0.65 0.06 160);
+  --chart-4: oklch(0.62 0.09 30);
+  --chart-5: oklch(0.55 0 0);
+  --radius: 0.5rem;
   --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.559 0.218 277.117);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.94 0.04 277);
-  --sidebar-accent-foreground: oklch(0.4 0.18 277);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.559 0.218 277.117);
+  --sidebar-foreground: oklch(0.09 0 0);
+  --sidebar-primary: oklch(0.42 0.085 152);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.94 0 0);
+  --sidebar-accent-foreground: oklch(0.25 0 0);
+  --sidebar-border: oklch(0.90 0 0);
+  --sidebar-ring: oklch(0.42 0.085 152);
 }
 
 .dark {
-  --background: oklch(0.12 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.17 0.005 277);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.17 0.005 277);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.702 0.183 277.117);
-  --primary-foreground: oklch(0.12 0 0);
-  --secondary: oklch(0.22 0.01 277);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.22 0.01 277);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.25 0.04 277);
-  --accent-foreground: oklch(0.85 0.08 277);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.702 0.183 277.117);
-  --chart-1: oklch(0.702 0.183 277.117);
-  --chart-2: oklch(0.65 0.18 200);
-  --chart-3: oklch(0.7 0.15 160);
-  --chart-4: oklch(0.65 0.18 30);
-  --chart-5: oklch(0.65 0.22 310);
-  --sidebar: oklch(0.15 0.005 277);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.702 0.183 277.117);
-  --sidebar-primary-foreground: oklch(0.12 0 0);
-  --sidebar-accent: oklch(0.25 0.04 277);
-  --sidebar-accent-foreground: oklch(0.85 0.08 277);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.702 0.183 277.117);
+  /* Off-Black background, Charcoal cards */
+  --background: oklch(0.08 0 0);
+  --foreground: oklch(0.97 0 0);
+  --card: oklch(0.12 0 0);
+  --card-foreground: oklch(0.97 0 0);
+  --popover: oklch(0.12 0 0);
+  --popover-foreground: oklch(0.97 0 0);
+  /* Acento único: Verde Sálvia (mais claro no escuro) */
+  --primary: oklch(0.62 0.10 152);
+  --primary-foreground: oklch(0.06 0 0);
+  --secondary: oklch(0.16 0 0);
+  --secondary-foreground: oklch(0.97 0 0);
+  --muted: oklch(0.16 0 0);
+  --muted-foreground: oklch(0.55 0 0);
+  --accent: oklch(0.18 0 0);
+  --accent-foreground: oklch(0.80 0 0);
+  --destructive: oklch(0.65 0.18 27);
+  /* Bordas ultra-finas e discretas */
+  --border: oklch(1 0 0 / 7%);
+  --input: oklch(1 0 0 / 8%);
+  --ring: oklch(0.62 0.10 152);
+  --chart-1: oklch(0.62 0.10 152);
+  --chart-2: oklch(0.60 0.07 200);
+  --chart-3: oklch(0.65 0.06 160);
+  --chart-4: oklch(0.62 0.09 30);
+  --chart-5: oklch(0.55 0 0);
+  /* Sidebar: ligeiramente mais escura que o background */
+  --sidebar: oklch(0.065 0 0);
+  --sidebar-foreground: oklch(0.97 0 0);
+  --sidebar-primary: oklch(0.62 0.10 152);
+  --sidebar-primary-foreground: oklch(0.06 0 0);
+  --sidebar-accent: oklch(0.18 0 0);
+  --sidebar-accent-foreground: oklch(0.80 0 0);
+  --sidebar-border: oklch(1 0 0 / 6%);
+  --sidebar-ring: oklch(0.62 0.10 152);
 }
 
 @layer base {
@@ -124,8 +131,14 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
   html {
     @apply font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display, var(--font-geist-sans));
+    letter-spacing: -0.02em;
+    font-weight: 600;
   }
 }
