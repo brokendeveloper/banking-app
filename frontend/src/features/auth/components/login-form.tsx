@@ -26,62 +26,74 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit((data) => login(data))} className="space-y-5">
-      <div className="space-y-2">
-        <Label htmlFor="email" className="text-sm font-medium text-foreground/80">
+      <div className="space-y-1.5">
+        <Label htmlFor="email" className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
           E-mail
         </Label>
         <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground/60" />
           <Input
             id="email"
             type="email"
             placeholder="seu@email.com"
             autoComplete="email"
-            className={cn("pl-10", errors.email && "border-destructive")}
+            className={cn(
+              "pl-9 h-10 bg-card border-border/60 text-sm placeholder:text-muted-foreground/40 focus-visible:border-primary/60 focus-visible:ring-primary/20 transition-colors duration-150",
+              errors.email && "border-destructive/60"
+            )}
             {...register("email")}
           />
         </div>
         {errors.email && (
-          <p className="text-xs text-destructive">{errors.email.message}</p>
+          <p className="text-xs text-destructive/80">{errors.email.message}</p>
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="password" className="text-sm font-medium text-foreground/80">
+      <div className="space-y-1.5">
+        <Label htmlFor="password" className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
           Senha
         </Label>
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground/60" />
           <Input
             id="password"
             type={showPassword ? "text" : "password"}
             placeholder="••••••••"
             autoComplete="current-password"
-            className={cn("pl-10 pr-10", errors.password && "border-destructive")}
+            className={cn(
+              "pl-9 pr-10 h-10 bg-card border-border/60 text-sm placeholder:text-muted-foreground/40 focus-visible:border-primary/60 focus-visible:ring-primary/20 transition-colors duration-150",
+              errors.password && "border-destructive/60"
+            )}
             {...register("password")}
           />
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-muted-foreground transition-colors duration-150"
           >
-            {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+            {showPassword ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
           </button>
         </div>
         {errors.password && (
-          <p className="text-xs text-destructive">{errors.password.message}</p>
+          <p className="text-xs text-destructive/80">{errors.password.message}</p>
         )}
       </div>
 
-      <Button type="submit" className="w-full font-semibold" size="lg" disabled={isPending}>
-        {isPending ? "Entrando..." : "Entrar"}
-      </Button>
+      <div className="pt-1">
+        <Button
+          type="submit"
+          className="w-full h-10 text-sm font-medium bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-150"
+          disabled={isPending}
+        >
+          {isPending ? "Entrando..." : "Entrar"}
+        </Button>
+      </div>
 
       <p className="text-center text-sm text-muted-foreground">
         Não tem conta?{" "}
         <Link
           href="/cadastro"
-          className="font-semibold text-primary hover:text-primary/80 transition-colors"
+          className="font-medium text-foreground hover:text-primary transition-colors duration-150"
         >
           Abrir conta
         </Link>
