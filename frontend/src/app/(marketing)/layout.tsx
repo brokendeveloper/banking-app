@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MarketingHeader } from "@/features/marketing/components/marketing-header";
 
 export default function MarketingLayout({
