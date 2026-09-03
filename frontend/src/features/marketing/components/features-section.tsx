@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowLeftRight,
   CreditCard,
@@ -6,6 +8,8 @@ import {
   BarChart3,
   ShieldCheck,
 } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { fadeUp, staggerFast } from "../lib/motion";
 
 const features = [
   {
@@ -47,11 +51,19 @@ const features = [
 ];
 
 export function FeaturesSection() {
+  const shouldAnimate = !useReducedMotion();
+
   return (
     <section id="features" className="py-24 md:py-32">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
-        <div className="max-w-xl mb-16">
+        <motion.div
+          className="max-w-xl mb-16"
+          variants={shouldAnimate ? { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } } : undefined}
+          initial={shouldAnimate ? "hidden" : false}
+          whileInView="show"
+          viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+        >
           <p className="text-[11px] font-semibold text-primary uppercase tracking-widest mb-4">
             Funcionalidades
           </p>
@@ -62,15 +74,30 @@ export function FeaturesSection() {
           <p className="text-sm text-muted-foreground/60 leading-relaxed">
             Do básico ao avançado — gerenciar dinheiro nunca foi tão simples.
           </p>
-        </div>
+        </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border/30 rounded-2xl overflow-hidden">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border/30 rounded-2xl overflow-hidden"
+          variants={shouldAnimate ? staggerFast : undefined}
+          initial={shouldAnimate ? "hidden" : false}
+          whileInView="show"
+          viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+        >
           {features.map((feature, i) => {
             const Icon = feature.icon;
             return (
-              <div
+              <motion.div
                 key={i}
+                variants={shouldAnimate ? fadeUp : undefined}
+                whileHover={
+                  shouldAnimate
+                    ? {
+                        y: -4,
+                        transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] },
+                      }
+                    : undefined
+                }
                 className="group bg-background hover:bg-card/60 transition-colors duration-150 p-8 flex flex-col gap-4"
               >
                 <div className="flex items-center justify-center size-9 rounded-lg bg-muted/60 group-hover:bg-muted transition-colors duration-150">
@@ -84,10 +111,10 @@ export function FeaturesSection() {
                     {feature.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
