@@ -1,3 +1,8 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+import { fadeUp, fadeIn, stagger, EASE_OUT_EXPO } from "../lib/motion";
+
 const steps = [
   {
     step: "01",
@@ -20,12 +25,20 @@ const steps = [
 ];
 
 export function HowItWorksSection() {
+  const shouldAnimate = !useReducedMotion();
+
   return (
     <section id="how-it-works" className="py-24 md:py-32 border-t border-border/40">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left: header */}
-          <div className="lg:sticky lg:top-24 space-y-5">
+          {/* Left: sticky header */}
+          <motion.div
+            className="lg:sticky lg:top-24 space-y-5"
+            variants={shouldAnimate ? fadeIn : undefined}
+            initial={shouldAnimate ? "hidden" : false}
+            whileInView="show"
+            viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+          >
             <p className="text-[11px] font-semibold text-primary uppercase tracking-widest">
               Como funciona
             </p>
@@ -37,12 +50,22 @@ export function HowItWorksSection() {
               Sem documentação física, sem visitas a agências. Tudo pelo celular,
               de onde você estiver.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Right: steps */}
-          <div className="space-y-0 divide-y divide-border/40">
+          {/* Right: steps with stagger */}
+          <motion.div
+            className="space-y-0 divide-y divide-border/40"
+            variants={shouldAnimate ? stagger : undefined}
+            initial={shouldAnimate ? "hidden" : false}
+            whileInView="show"
+            viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+          >
             {steps.map((item) => (
-              <div key={item.step} className="py-8 flex items-start gap-6 group">
+              <motion.div
+                key={item.step}
+                variants={shouldAnimate ? fadeUp : undefined}
+                className="py-8 flex items-start gap-6 group"
+              >
                 <p className="text-xs font-mono text-muted-foreground/30 pt-0.5 shrink-0 w-6">
                   {item.step}
                 </p>
@@ -54,9 +77,9 @@ export function HowItWorksSection() {
                     {item.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
